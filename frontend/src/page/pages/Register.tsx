@@ -1,5 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input, Button } from "@chakra-ui/react";
+import {
+  FaRegEye as OpenEye,
+  FaRegEyeSlash as SlashedEye,
+} from "react-icons/fa";
+import { useState } from "react";
 
 type Inputs = {
   username: string;
@@ -18,6 +23,17 @@ function Register() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
   };
+
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
+  const [confirmPasswordShown, setConfirmPasswordShown] =
+    useState<boolean>(false);
+
+  const handlePasswordChange = () => {
+    setPasswordShown((prev) => !prev);
+  };
+  const handleConfirmPasswordChange = () => {
+    setConfirmPasswordShown((prev) => !prev);
+  };
   return (
     <>
       <form
@@ -34,6 +50,7 @@ function Register() {
                 Username
               </label>
               <Input
+                type="text"
                 id="username"
                 placeholder="johndoe123"
                 {...register("username", { required: "Username is required" })}
@@ -71,22 +88,36 @@ function Register() {
               <label htmlFor="password" className="text-lg ">
                 Password
               </label>
-              <Input
-                id="password"
-                placeholder="********"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password length must be 8 characters long",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Password must not be longer than 20 characters",
-                  },
-                })}
-                className="max-w-[250px]"
-              />
+              <div className="flex items-center">
+                <Input
+                  type={passwordShown ? "text" : "password"}
+                  id="password"
+                  placeholder="********"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password length must be 8 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Password must not be longer than 20 characters",
+                    },
+                  })}
+                  className="max-w-[250px]"
+                />
+                {passwordShown ? (
+                  <SlashedEye
+                    className="h-6 w-6 ml-2 cursor-pointer"
+                    onClick={handlePasswordChange}
+                  />
+                ) : (
+                  <OpenEye
+                    className="h-6 w-6 ml-2 cursor-pointer"
+                    onClick={handlePasswordChange}
+                  />
+                )}
+              </div>
               {errors.password && (
                 <div className="text-sm text-red-500 max-w-[230px]">
                   {errors.password.message}
@@ -96,26 +127,46 @@ function Register() {
 
             <div id="confirmPasswordField" className="flex flex-col  mt-2">
               <label htmlFor="confirmPassword" className="text-lg ">
-                Password
+                Confirm password
               </label>
-              <Input
-                id="confirmPassword"
-                placeholder="********"
-                {...register("confirmPassword", {
-                  validate: (val: string) =>
-                    watch("password") !== val ||
-                    "Confirm password do not matches password",
-                })}
-                className="max-w-[250px]"
-              />
+              <div className="flex items-center">
+                <Input
+                  type={confirmPasswordShown ? "text" : "password"}
+                  id="confirmPassword"
+                  placeholder="********"
+                  {...register("confirmPassword", {
+                    validate: (val: string) =>
+                      watch("password") !== val ||
+                      "Confirm password do not matches password",
+                  })}
+                  className="max-w-[250px]"
+                />
+                {confirmPasswordShown ? (
+                  <SlashedEye
+                    className="h-6 w-6 ml-2 cursor-pointer"
+                    onClick={handleConfirmPasswordChange}
+                  />
+                ) : (
+                  <OpenEye
+                    className="h-6 w-6 ml-2 cursor-pointer"
+                    onClick={handleConfirmPasswordChange}
+                  />
+                )}
+              </div>
               {errors.confirmPassword && (
                 <div className="text-sm text-red-500 max-w-[230px]">
                   {errors.confirmPassword.message}
                 </div>
               )}
             </div>
+            <div id="showHidePass"></div>
             <div id="button" className="w-full flex justify-center">
-              <Button type="submit" className="text-text border p-2 m-5">
+              <Button
+                variant="outline"
+                colorScheme="cyan"
+                type="submit"
+                className="text-text border p-2 m-5 hover:text-main"
+              >
                 Register
               </Button>
             </div>
