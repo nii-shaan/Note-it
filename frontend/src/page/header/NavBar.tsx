@@ -1,10 +1,12 @@
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function NavBar() {
-  const navItemStyleActive = "border-b px-2 py-1 transition-all duration-100 ease-in-out";
-  const navItemStyleInActive = "px-2 py-1 transition-all duration-100 ease-in-out";
+  const navItemStyleActive =
+    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-[#071952] text-second";
+  const navItemStyleInActive =
+    "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-main hover:text-text  ";
   return (
-    <div className="h-16 w-min bg-second text-secondText  flex justify-center items-center gap-x-3 px-2  mx-auto mt-5 sticky">
+    <div className="h-14 w-min rounded-xl bg-second text-secondText  flex justify-center items-center gap-x-5 px-5  mx-auto mt-5 sticky top-0">
       <NavLink
         to=""
         className={({ isActive }) =>
