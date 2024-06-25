@@ -8,6 +8,20 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Home, Register, Login } from "./page/index.ts";
+import {
+  ChakraBaseProvider,
+  extendBaseTheme,
+  theme as chakraTheme,
+} from "@chakra-ui/react";
+
+const { Button, Input } = chakraTheme.components;
+
+const theme = extendBaseTheme({
+  components: {
+    Button,
+    Input,
+  },
+});
 
 const route = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +34,8 @@ const route = createBrowserRouter(
 );
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <RouterProvider router={route} />
+  <ChakraBaseProvider theme={theme}>
+    <RouterProvider router={route} />
+  </ChakraBaseProvider>
   // </React.StrictMode>,
 );
