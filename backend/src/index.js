@@ -14,5 +14,11 @@ connectDB()
     });
   })
   .catch((error) => {
-    console.log("Failed to connect database",error);
+    console.log("Failed to connect database", error);
   });
+
+/**
+ * * Routes
+ */
+const userRouter = require("./routes/user.route.js");
+app.use("/user", userRouter);
