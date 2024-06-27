@@ -17,6 +17,15 @@ function NavBar() {
       </NavLink>
 
       <NavLink
+        to="/login"
+        className={({ isActive }) =>
+          isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+        }
+      >
+        Login
+      </NavLink>
+
+      <NavLink
         to="/register"
         className={({ isActive }) =>
           isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
