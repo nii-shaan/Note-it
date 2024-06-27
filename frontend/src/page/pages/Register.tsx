@@ -5,6 +5,7 @@ import {
   FaRegEyeSlash as SlashedEye,
 } from "react-icons/fa";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 type Inputs = {
   username: string;
@@ -18,10 +19,45 @@ function Register() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/register`, {
+      method: "post",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        data.success
+          ? toast.success(data.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              pauseOnHover: false,
+              closeOnClick: true,
+              draggable: true,
+              theme: "colored",
+            })
+          : toast.error(data.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              pauseOnHover: false,
+              closeOnClick: true,
+              draggable: true,
+              theme: "colored",
+            });
+        reset({
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      });
   };
 
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
@@ -97,7 +133,8 @@ function Register() {
                     required: "Password is required",
                     minLength: {
                       value: 8,
-                      message: "Password length must be 8 characters long",
+                      message:
+                        "Password length must be longer than 8 characters",
                     },
                     maxLength: {
                       value: 20,
@@ -136,7 +173,7 @@ function Register() {
                   placeholder="********"
                   {...register("confirmPassword", {
                     validate: (val: string) =>
-                      watch("password") !== val ||
+                      watch("password") === val ||
                       "Confirm password do not matches password",
                   })}
                   className="max-w-[250px]"
