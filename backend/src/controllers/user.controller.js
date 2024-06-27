@@ -2,6 +2,7 @@ const ApiError = require("../utils/ApiError.js");
 const ApiResponse = require("../utils/ApiResponse.js");
 const asyncHandler = require("../utils/asyncHandler.js");
 const User = require("../model/user.model.js");
+const bcrypt = require("bcrypt");
 
 const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body);
@@ -37,12 +38,15 @@ const loginUser = asyncHandler(async (req, res) => {
       .status(404)
       .json(new ApiResponse(404, null, "User not found", false));
   }
-  if (query.password !== password) {
+
+  const passwordValidCheck = await bcrypt.compare(password, query.password);
+
+  if (!passwordValidCheck) {
     return res
       .status(406)
       .json(new ApiResponse(406, null, "Invalid Credentials", false));
   }
-  if (query.password === password) {
+  if (passwordValidCheck) {
     return res.status(200).json(new ApiResponse(200, query, "User Logged in"));
   }
 });

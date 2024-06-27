@@ -6,6 +6,7 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   username: string;
@@ -15,6 +16,7 @@ type Inputs = {
 };
 
 function Register() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -33,7 +35,7 @@ function Register() {
       .then((res) => res.json())
       .then((data) => {
         data.success
-          ? toast.success(data.message, {
+          ? toast.success(`${data.message}, Please proceed to login`, {
               position: "top-center",
               autoClose: 3000,
               hideProgressBar: true,
@@ -57,6 +59,7 @@ function Register() {
           password: "",
           confirmPassword: "",
         });
+        navigate("/login");
       });
   };
 
@@ -87,6 +90,7 @@ function Register() {
               </label>
               <Input
                 type="text"
+                autoComplete="username"
                 id="username"
                 placeholder="johndoe123"
                 {...register("username", { required: "Username is required" })}
@@ -104,6 +108,7 @@ function Register() {
               </label>
               <Input
                 id="email"
+                autoComplete="email"
                 placeholder="john@gmail.com"
                 {...register("email", {
                   required: "Email address is required",
@@ -196,7 +201,15 @@ function Register() {
                 </div>
               )}
             </div>
-            <div id="showHidePass"></div>
+            <div className="text-sm mt-1 text-green-400">
+              <span className=""> Already have an account?</span>
+              <span
+                className="ml-2 hover:cursor-pointer hover:underline  text-yellow-500"
+                onClick={() => navigate("/login")}
+              >
+                Login here
+              </span>
+            </div>
             <div id="button" className="w-full flex justify-center">
               <Button
                 variant="outline"

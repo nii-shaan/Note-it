@@ -6,16 +6,18 @@ import {
   FaRegEyeSlash as SlashedEye,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 type Inputs = {
   email: String;
   password: String;
 };
 
 function Login() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -24,7 +26,6 @@ function Login() {
     setPasswordShown((prev) => !prev);
   };
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/login`, {
       method: "post",
       body: JSON.stringify(data),
@@ -34,7 +35,27 @@ function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        data.success
+          ? toast.success(data.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              pauseOnHover: false,
+              closeOnClick: true,
+              draggable: true,
+              theme: "colored",
+            })
+          : toast.error(data.message, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              pauseOnHover: false,
+              closeOnClick: true,
+              draggable: true,
+              theme: "colored",
+            });
+
+        reset({ email: "", password: "" });
       });
   };
   return (
@@ -99,6 +120,15 @@ function Login() {
                 </div>
               )}
               {}
+            </div>
+            <div className="text-sm mt-1 text-green-400">
+              <span className="">New user?</span>
+              <span
+                className="ml-2 hover:cursor-pointer hover:underline  text-yellow-500"
+                onClick={() => navigate("/register")}
+              >
+                Register here
+              </span>
             </div>
             <div id="button" className="w-full flex justify-center">
               <Button
