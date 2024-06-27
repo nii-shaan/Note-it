@@ -5,6 +5,7 @@ import {
   FaRegEye as OpenEye,
   FaRegEyeSlash as SlashedEye,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 type Inputs = {
   email: String;
@@ -17,12 +18,24 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-  };
+
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
   const handlePasswordChange = () => {
     setPasswordShown((prev) => !prev);
+  };
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/login`, {
+      method: "post",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
   return (
     <>

@@ -28,6 +28,26 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User created Sucessfully"));
 });
 
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const query = await User.findOne({ email: email });
+
+  if (!query) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "User not found", false));
+  }
+  if (query.password !== password) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "Invalid Credentials", false));
+  }
+  if (query.password === password) {
+    return res.status(200).json(new ApiResponse(200, query, "User Logged in"));
+  }
+});
+
 module.exports = {
   registerUser,
+  loginUser,
 };
