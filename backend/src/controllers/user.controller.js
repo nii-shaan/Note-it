@@ -3,6 +3,17 @@ const ApiResponse = require("../utils/ApiResponse.js");
 const asyncHandler = require("../utils/asyncHandler.js");
 const User = require("../model/user.model.js");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const generateAccessToken = async (user) => {
+  return await jwt.sign({ username: user.username, email: user.email }, "123", {
+    expiresIn: "15m",
+  });
+};
+
+const generateRefreshToken = async (user) => {
+  return await jwt.sign({ username: user.username, email: user.email }, "abc");
+};
 
 const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body);
@@ -27,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(200, user, "User created Sucessfully"));
-});
+}); 
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -46,9 +57,14 @@ const loginUser = asyncHandler(async (req, res) => {
       .status(406)
       .json(new ApiResponse(406, null, "Invalid Credentials", false));
   }
-  if (passwordValidCheck) {
-    return res.status(200).json(new ApiResponse(200, query, "User Logged in"));
-  }
+
+  const accessToken = await generateAccessToken(query);
+  const refreshToken = await generateRefreshToken(query);
+
+  console.log(accessToken);
+  console.log(refreshToken);
+
+  return res.status(200).json(new ApiResponse(200, query, "User Logged in"));
 });
 
 module.exports = {

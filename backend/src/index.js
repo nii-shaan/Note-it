@@ -22,3 +22,6 @@ connectDB()
  */
 const userRouter = require("./routes/user.route.js");
 app.use("/user", userRouter);
+
+const notesRouter = require("./routes/notes.route.js");
+app.use("/notes", notesRouter);
