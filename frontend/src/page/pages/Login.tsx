@@ -33,14 +33,16 @@ function Login() {
   };
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/login`, {
-      method: "post",
+      method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.success) {
           toast.success(data.message, {
             position: "bottom-center",
