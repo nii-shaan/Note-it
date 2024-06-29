@@ -10,12 +10,16 @@ import { useNavigate } from "react-router-dom";
 type Inputs = {
   email: String;
   password: String;
-};  
-import { useSelector,useDispatch } from "react-redux";
-
+};
+import { useDispatch } from "react-redux";
+import { login } from "../../store/user.slice";
+// import { RootState } from "../../store/store.ts";
 
 function Login() {
   const navigate = useNavigate();
+  const dispacth = useDispatch();
+  // const loginState = useSelector((state:RootState)=>state.user.loggedIn)
+  // console.log(loginState)
   const {
     register,
     handleSubmit,
@@ -37,26 +41,35 @@ function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        data.success
-          ? toast.success(data.message, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-              pauseOnHover: false,
-              closeOnClick: true,
-              draggable: true,
-              theme: "colored",
-            })
-          : toast.error(data.message, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-              pauseOnHover: false,
-              closeOnClick: true,
-              draggable: true,
-              theme: "colored",
-            });
+        if (data.success) {
+          toast.success(data.message, {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: false,
+            closeOnClick: true,
+            draggable: true,
+            theme: "colored",
+          });
 
+          dispacth(
+            login({
+              username: data.data.username,
+              email: data.data.email,
+            })
+          );
+          navigate("/");
+        } else {
+          toast.error(data.message, {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: false,
+            closeOnClick: true,
+            draggable: true,
+            theme: "colored",
+          });
+        }
         reset({ email: "", password: "" });
       });
   };

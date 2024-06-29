@@ -7,7 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { Home, Register, Login } from "./page/index.ts";
+import { Home, Register, Login, Notes } from "./page/index.ts";
 import {
   ChakraBaseProvider,
   extendBaseTheme,
@@ -32,6 +32,7 @@ const route = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/notes" element={<Notes />} />
     </Route>
   )
 );

@@ -1,6 +1,26 @@
 import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/store";
+import { logout } from "../../store/user.slice";
+import { toast } from "react-toastify";
 
 function NavBar() {
+  const userStatus = useSelector((state: RootState) => state.user);
+  const dispacth = useDispatch();
+
+  const logoutHandler = () => {
+    dispacth(logout());
+    toast.success("Logged out", {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      pauseOnHover: false,
+      closeOnClick: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
+
   const navItemStyleActive =
     "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-[#071952] text-second";
   const navItemStyleInActive =
@@ -16,23 +36,42 @@ function NavBar() {
         Home
       </NavLink>
 
-      <NavLink
-        to="/login"
-        className={({ isActive }) =>
-          isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
-        }
-      >
-        Login
-      </NavLink>
+      {!userStatus.loggedIn ? (
+        <>
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Login
+          </NavLink>
 
-      <NavLink
-        to="/register"
-        className={({ isActive }) =>
-          isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
-        }
-      >
-        Register
-      </NavLink>
+          <NavLink
+            to="/register"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Register
+          </NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink
+            to="/notes"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Notes
+          </NavLink>
+
+          <button className={navItemStyleInActive} onClick={logoutHandler}>
+            Logout
+          </button>
+        </>
+      )}
     </div>
   );
 }
