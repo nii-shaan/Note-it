@@ -10,7 +10,9 @@ import { useNavigate } from "react-router-dom";
 type Inputs = {
   email: String;
   password: String;
-};
+};  
+import { useSelector,useDispatch } from "react-redux";
+
 
 function Login() {
   const navigate = useNavigate();

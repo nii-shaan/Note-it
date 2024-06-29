@@ -6,13 +6,23 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const generateAccessToken = async (user) => {
-  return await jwt.sign({ username: user.username, email: user.email }, "123", {
-    expiresIn: "15m",
-  });
+  return await jwt.sign(
+    { username: user.username, email: user.email },
+    process.env.AUTH_ACCESS_TOKEN_SECRET_KEY,
+    {
+      expiresIn: process.env.AUTH_ACCESS_TOKEN_EXPIRY,
+    }
+  );
 };
 
 const generateRefreshToken = async (user) => {
-  return await jwt.sign({ username: user.username, email: user.email }, "abc");
+  return await jwt.sign(
+    { username: user.username, email: user.email },
+    process.env.AUTH_REFRESH_TOKEN_SECRET_KEY,
+    {
+      expiresIn: process.env.AUTH_REFRESH_TOKEN_EXPIRY,
+    }
+  );
 };
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -38,7 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(new ApiResponse(200, user, "User created Sucessfully"));
-}); 
+});
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -61,10 +71,16 @@ const loginUser = asyncHandler(async (req, res) => {
   const accessToken = await generateAccessToken(query);
   const refreshToken = await generateRefreshToken(query);
 
-  console.log(accessToken);
-  console.log(refreshToken);
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
-  return res.status(200).json(new ApiResponse(200, query, "User Logged in"));
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(new ApiResponse(200, query, "User Logged in"));
 });
 
 module.exports = {

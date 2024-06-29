@@ -14,6 +14,9 @@ import {
   theme as chakraTheme,
 } from "@chakra-ui/react";
 
+import store from "./store/store.ts";
+import { Provider } from "react-redux";
+
 const { Button, Input } = chakraTheme.components;
 
 const theme = extendBaseTheme({
@@ -35,7 +38,9 @@ const route = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraBaseProvider theme={theme}>
-    <RouterProvider router={route} />
+    <Provider store={store}>
+      <RouterProvider router={route} />
+    </Provider>
   </ChakraBaseProvider>
   // </React.StrictMode>,
 );
