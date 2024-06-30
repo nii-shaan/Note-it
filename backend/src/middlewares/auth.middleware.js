@@ -2,6 +2,7 @@ const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const jwt = require("jsonwebtoken");
 const User = require("../model/user.model.js");
+const { generateAccessToken } = require("../controllers/user.controller.js");
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
   // console.log("JWT middleware test")
@@ -35,11 +36,70 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    return res
-      .status(401)
-      .json(
-        new ApiResponse(500, null, err.message || "Invalid access token", false)
-      );
+    if (err.message === "jwt expired") {
+      const incommingRefreshToken =
+        req.cookies.refreshToken || req.body.refreshToken;
+
+      if (!incommingRefreshToken) {
+        return res
+          .status(401)
+          .json(
+            new ApiResponse(401, null, "Refresh token is not provided", false)
+          );
+      }
+
+      try {
+        const decodedRefreshToken = await jwt.verify(
+          incommingRefreshToken,
+          process.env.AUTH_REFRESH_TOKEN_SECRET_KEY
+        );
+
+        const user = await User.findById(decodedRefreshToken.id);
+
+        if (!user) {
+          return res
+            .status(400)
+            .json(new ApiResponse(400, null, "Invalid refresh token", false));
+        }
+        if (incommingRefreshToken !== user?.refreshToken) {
+          return res
+            .status(401)
+            .json(
+              new ApiResponse(
+                401,
+                null,
+                "Refresh token is expired or used",
+                false
+              )
+            );
+        }
+
+        const options = {
+          httpOnly: true,
+          secure: false,
+        };
+
+        const newAccessToken = await generateAccessToken(user._id);
+        console.log(newAccessToken);
+
+        res
+          .status(200)
+          .cookie("accessToken", newAccessToken, options)
+          .json(
+            new ApiResponse(
+              200,
+              { newAccessToken: newAccessToken },
+              "Access token refreshed",
+              true
+            )
+          );
+        next();
+      } catch (refreshErr) {
+        return res
+          .status(400)
+          .json(new ApiResponse(403, null, refreshErr.message, false));
+      }
+    }
   }
 });
 

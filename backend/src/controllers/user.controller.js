@@ -71,8 +71,11 @@ const loginUser = asyncHandler(async (req, res) => {
       .json(new ApiResponse(406, null, "Invalid Credentials", false));
   }
 
-  const accessToken = await generateAccessToken(query);
-  const refreshToken = await generateRefreshToken(query);
+  const accessToken = await generateAccessToken(query._id);
+  const refreshToken = await generateRefreshToken(query._id);
+
+  query.refreshToken = refreshToken;
+  await query.save();
 
   const options = {
     httpOnly: true,
@@ -97,7 +100,15 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
+const logout = asyncHandler((req, res) => {
+  res.clearCookie("accessToken", { path: "/", httpOnly: true, secure: true });
+  res.clearCookie("refreshToken", { path: "/", httpOnly: true, secure: true });
+  res.status(200).send(new ApiResponse(200, null, "Logout success", true));
+});
+
 module.exports = {
   registerUser,
   loginUser,
+  logout,
+  generateAccessToken,
 };

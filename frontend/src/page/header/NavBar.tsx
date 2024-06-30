@@ -3,21 +3,36 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { logout } from "../../store/user.slice";
 import { toast } from "react-toastify";
+import logoutUtil from "../../utils/logout";
 
 function NavBar() {
   const userStatus = useSelector((state: RootState) => state.user);
   const dispacth = useDispatch();
 
-  const logoutHandler = () => {
-    dispacth(logout());
-    toast.success("Logged out", {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      pauseOnHover: false,
-      closeOnClick: true,
-      draggable: true,
-      theme: "colored",
+  const logoutHandler = async () => {
+    logoutUtil().then((data) => {
+      if (data.success) {
+        dispacth(logout());
+        toast.success(data.message, {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          pauseOnHover: false,
+          closeOnClick: true,
+          draggable: true,
+          theme: "colored",
+        });
+      } else {
+        toast.error("Logout failed", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          pauseOnHover: false,
+          closeOnClick: true,
+          draggable: true,
+          theme: "colored",
+        });
+      }
     });
   };
 
