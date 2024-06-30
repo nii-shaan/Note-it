@@ -25,3 +25,7 @@ app.use("/user", userRouter);
 
 const notesRouter = require("./routes/notes.route.js");
 app.use("/notes", notesRouter);
+
+const verifyJWT = require("./middlewares/auth.middleware");
+const jwtVerifier = require("./controllers/jwtVerifier.controller.js");
+app.get("/verifyJWT", verifyJWT, jwtVerifier);
