@@ -13,13 +13,12 @@ type Inputs = {
 };
 import { useDispatch } from "react-redux";
 import { login } from "../../store/user.slice";
-// import { RootState } from "../../store/store.ts";
+
 
 function Login() {
   const navigate = useNavigate();
   const dispacth = useDispatch();
-  // const loginState = useSelector((state:RootState)=>state.user.loggedIn)
-  // console.log(loginState)
+
   const {
     register,
     handleSubmit,
@@ -53,11 +52,10 @@ function Login() {
             draggable: true,
             theme: "colored",
           });
-
           dispacth(
             login({
-              username: data.data.username,
-              email: data.data.email,
+              username: data.data.userData.username,
+              email: data.data.userData.email,
             })
           );
           navigate("/");
