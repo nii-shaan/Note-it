@@ -9,7 +9,6 @@ function Layout() {
   const dispatch = useDispatch();
   useEffect(() => {
     const initializeUser = async () => {
-      console.log("test pass");
       const response = await fetch(
         `${import.meta.env.VITE_API_ENDPOINT}/verifyJWT`,
         { credentials: "include" }

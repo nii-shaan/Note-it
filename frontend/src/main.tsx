@@ -25,6 +25,10 @@ const theme = extendBaseTheme({
     Input,
   },
 });
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 const route = createBrowserRouter(
   createRoutesFromElements(
@@ -38,10 +42,13 @@ const route = createBrowserRouter(
 );
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <ChakraBaseProvider theme={theme}>
-    <Provider store={store}>
-      <RouterProvider router={route} />
-    </Provider>
-  </ChakraBaseProvider>
+  <QueryClientProvider client={queryClient}>
+    <ChakraBaseProvider theme={theme}>
+      <Provider store={store}>
+        <RouterProvider router={route} />
+      </Provider>
+    </ChakraBaseProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
   // </React.StrictMode>,
 );

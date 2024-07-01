@@ -95,6 +95,23 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
           );
         next();
       } catch (refreshErr) {
+        if (refreshErr.message === "jwt expired") {
+          return res
+            .status(400)
+            .clearCookie("accessToken", {
+              path: "/",
+              httpOnly: true,
+              secure: false,
+            })
+            .clearCookie("refreshToken", {
+              path: "/",
+              httpOnly: true,
+              secure: false,
+            })
+            .json(
+              new ApiResponse(403, null, "Refresh token is expired", false)
+            );
+        }
         return res
           .status(400)
           .json(new ApiResponse(403, null, refreshErr.message, false));
