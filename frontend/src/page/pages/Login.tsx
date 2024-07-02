@@ -7,13 +7,14 @@ import {
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { CiLogin } from "react-icons/ci";
+
 type Inputs = {
   email: String;
   password: String;
 };
 import { useDispatch } from "react-redux";
 import { login } from "../../store/user.slice";
-
 
 function Login() {
   const navigate = useNavigate();
@@ -81,8 +82,10 @@ function Login() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="bg-[#102C57] h-full w-[95%] mx-auto flex flex-col  rounded-xl text-text">
-          <div id="title" className="flex justify-center mt-2">
-            <h1 className="text-4xl text-second border-b">Login</h1>
+          <div id="heading" className="flex-col w-full py-2 border-b">
+            <div className=" flex justify-center items-center text-4xl text-second ">
+              Login <CiLogin className="text-[50px]" />
+            </div>
           </div>
           <div id="fields" className="  mx-auto">
             <div id="emailField" className="flex flex-col mt-6">

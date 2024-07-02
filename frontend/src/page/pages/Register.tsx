@@ -7,6 +7,7 @@ import {
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
 
 type Inputs = {
   username: string;
@@ -80,8 +81,13 @@ function Register() {
         className="mt-10 h-[550px]  mx-auto max-w-[400px] flex justify-center"
       >
         <div className="h-full w-[95%] bg-[#102C57] text-text flex flex-col  rounded-xl  ">
-          <div id="heading" className="flex justify-center mt-2">
-            <h1 className="text-4xl text-second border-b">Register</h1>
+          <div id="heading" className="flex-col w-full py-2 border-b">
+            <div className="flex justify-center text-4xl">
+              <FaRegUserCircle />
+            </div>
+            <div className=" flex justify-center text-4xl text-second ">
+              Register{" "}
+            </div>
           </div>
           <div id="fields" className="mx-auto">
             <div id="inputField" className="flex flex-col mt-6">
