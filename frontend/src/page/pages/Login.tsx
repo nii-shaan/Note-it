@@ -81,9 +81,9 @@ function Login() {
         className=" mt-10 h-[350px]  mx-auto max-w-[400px] flex justify-center"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="bg-[#102C57] h-full w-[95%] mx-auto flex flex-col  rounded-xl text-text">
+        <div className="bg-second h-full w-[95%] mx-auto flex flex-col  rounded-xl text-text">
           <div id="heading" className="flex-col w-full py-2 border-b">
-            <div className=" flex justify-center items-center text-4xl text-second ">
+            <div className=" flex justify-center items-center text-4xl text-text ">
               Login <CiLogin className="text-[50px]" />
             </div>
           </div>

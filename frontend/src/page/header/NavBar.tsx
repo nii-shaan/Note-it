@@ -6,11 +6,11 @@ function NavBar() {
   const userStatus = useAppSelector((state) => state.user);
 
   const navItemStyleActive =
-    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-[#071952] text-second";
-  const navItemStyleInActive =
-    "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-main hover:text-text  ";
+    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-green-800 text-text";
+  const navItemStyleInActive =  
+    "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-[#495464] hover:text-text bg-second";
   return (
-    <div className="h-12 w-min rounded-xl bg-second text-secondText  flex justify-center items-center gap-x-5 px-5  mx-auto mt-2 sticky top-0">
+    <div className="h-12 w-min rounded-xl  text-secondText  flex justify-center items-center gap-x-5 px-5  mx-auto mt-2 sticky top-0">
       <NavLink
         to=""
         className={({ isActive }) =>
