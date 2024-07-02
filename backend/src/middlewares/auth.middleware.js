@@ -90,7 +90,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
               200,
               { newAccessToken: newAccessToken },
               "Access token refreshed",
-              true
+              false
             )
           );
         next();

@@ -16,6 +16,7 @@ import {
 
 import store from "./store/store.ts";
 import { Provider } from "react-redux";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 const { Button, Input } = chakraTheme.components;
 
@@ -36,7 +37,14 @@ const route = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/notes" element={<Notes />} />
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRoute>
+            <Notes />
+          </ProtectedRoute>
+        }
+      />
     </Route>
   )
 );

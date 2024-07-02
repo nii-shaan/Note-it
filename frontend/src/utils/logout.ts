@@ -4,6 +4,9 @@ const logoutUtil = async () => {
     { credentials: "include" }
   );
   const data = await response.json();
+  if (data.success) {
+    
+  }
   return await data;
 };
 export default logoutUtil;

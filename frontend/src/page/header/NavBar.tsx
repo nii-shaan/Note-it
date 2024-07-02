@@ -1,13 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/store";
 import { logout } from "../../store/user.slice";
 import { toast } from "react-toastify";
 import logoutUtil from "../../utils/logout";
+import { useAppDispatch, useAppSelector } from "../../hooks/ReduxHooks";
 
 function NavBar() {
-  const userStatus = useSelector((state: RootState) => state.user);
-  const dispacth = useDispatch();
+  const userStatus = useAppSelector((state) => state.user);
+  const dispacth = useAppDispatch();
 
   const logoutHandler = async () => {
     logoutUtil().then((data) => {
