@@ -9,13 +9,11 @@ interface PROTECTEDROUTE {
 const ProtectedRoute: React.FC<PROTECTEDROUTE> = ({ children }) => {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.user.loggedIn);
-  console.log(isLoggedIn);
   const [loading, setLoading] = React.useState<boolean>(true);
-  console.log(loading);
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate("");
+      navigate("/");
       setLoading(false);
     } else {
       setLoading(false);

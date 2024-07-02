@@ -16,7 +16,10 @@ function Notes() {
           (result.message === "Refresh token is expired" ||
             result.message === "Tokens not provided")
         ) {
-          logoutUtil();
+          logoutUtil({
+            showToast: true,
+            msg: "Session expired! please login again",
+          });
         } else if (
           !result.success &&
           result.message === "Access token refreshed"

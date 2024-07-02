@@ -3,9 +3,10 @@ import { logout } from "../store/user.slice";
 import { toast } from "react-toastify";
 interface LogoutUtilParam {
   showToast?: boolean;
+  msg?: string;
 }
 
-const logoutUtil = async ({ showToast = false }: LogoutUtilParam = {}) => {
+const logoutUtil = async ({ showToast = false, msg }: LogoutUtilParam = {}) => {
   const response = await fetch(
     `${import.meta.env.VITE_API_ENDPOINT}/user/logout`,
     { credentials: "include" }
@@ -13,7 +14,17 @@ const logoutUtil = async ({ showToast = false }: LogoutUtilParam = {}) => {
   const data = await response.json();
   if (data.success) {
     store.dispatch(logout());
-    if (showToast) {
+    if (showToast && msg) {
+      toast.error(msg, {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        pauseOnHover: false,
+        closeOnClick: true,
+        draggable: true,
+        theme: "colored",
+      });
+    } else if (showToast) {
       toast.success(data.message, {
         position: "bottom-center",
         autoClose: 3000,
@@ -23,9 +34,7 @@ const logoutUtil = async ({ showToast = false }: LogoutUtilParam = {}) => {
         draggable: true,
         theme: "colored",
       });
-    }
-  } else {
-    if (showToast) {
+    } else {
       toast.error("Logout failed", {
         position: "bottom-center",
         autoClose: 3000,
