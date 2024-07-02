@@ -1,39 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { logout } from "../../store/user.slice";
-import { toast } from "react-toastify";
 import logoutUtil from "../../utils/logout";
-import { useAppDispatch, useAppSelector } from "../../hooks/ReduxHooks";
+import { useAppSelector } from "../../hooks/ReduxHooks";
 
 function NavBar() {
   const userStatus = useAppSelector((state) => state.user);
-  const dispacth = useAppDispatch();
-
-  const logoutHandler = async () => {
-    logoutUtil().then((data) => {
-      if (data.success) {
-        dispacth(logout());
-        toast.success(data.message, {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          pauseOnHover: false,
-          closeOnClick: true,
-          draggable: true,
-          theme: "colored",
-        });
-      } else {
-        toast.error("Logout failed", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          pauseOnHover: false,
-          closeOnClick: true,
-          draggable: true,
-          theme: "colored",
-        });
-      }
-    });
-  };
 
   const navItemStyleActive =
     "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-[#071952] text-second";
@@ -81,7 +51,10 @@ function NavBar() {
             Notes
           </NavLink>
 
-          <button className={navItemStyleInActive} onClick={logoutHandler}>
+          <button
+            className={navItemStyleInActive}
+            onClick={() => logoutUtil({ showToast: true })}
+          >
             Logout
           </button>
         </>
