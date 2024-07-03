@@ -80,7 +80,7 @@ function Register() {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-10 h-[550px]  mx-auto max-w-[400px] flex justify-center"
       >
-        <div className="h-full w-[95%] bg-second text-text flex flex-col text-text  rounded-xl  ">
+        <div className="h-full w-[95%] bg-second text-text flex flex-col  rounded-xl  ">
           <div id="heading" className="flex-col w-full py-2 border-b">
             <div className="flex justify-center text-4xl">
               <FaRegUserCircle />

@@ -16,7 +16,7 @@ import {
 
 import store from "./store/store.ts";
 import { Provider } from "react-redux";
-import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import ProtectedRoute from "./components/self/ProtectedRoute.tsx";
 
 const { Button, Input } = chakraTheme.components;
 

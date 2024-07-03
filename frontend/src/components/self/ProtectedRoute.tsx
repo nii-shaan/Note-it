@@ -1,28 +1,26 @@
 import React, { useEffect } from "react";
-import { useAppSelector } from "../hooks/ReduxHooks";
+import { useAppSelector, useAppDispatch } from "../../hooks/ReduxHooks";
+import { turnOffLoader, turnOnLoader } from "../../store/loader.slice";
 import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
 interface PROTECTEDROUTE {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<PROTECTEDROUTE> = ({ children }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.user.loggedIn);
-  const [loading, setLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
+    dispatch(turnOnLoader());
     if (!isLoggedIn) {
       navigate("/");
-      setLoading(false);
+      dispatch(turnOffLoader());
     } else {
-      setLoading(false);
+      dispatch(turnOffLoader());
     }
   }, [isLoggedIn, navigate]);
 
-  if (loading) {
-    return <Loader />;
-  }
   return <>{children}</>;
 };
 

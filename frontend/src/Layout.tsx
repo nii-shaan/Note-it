@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { login } from "./store/user.slice.ts";
+import Loader from "@/components/self/Loader.tsx";
+
 function Layout() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -14,7 +16,7 @@ function Layout() {
         { credentials: "include" }
       );
       const data = await response.json();
-      // console.log(data)  
+      // console.log(data)
       if (data.success) {
         dispatch(
           login({ username: data.data.username, email: data.data.email })
@@ -27,6 +29,7 @@ function Layout() {
   return (
     <>
       <NavBar />
+      <Loader />
       <Outlet />
       <ToastContainer />
       <Footer />
