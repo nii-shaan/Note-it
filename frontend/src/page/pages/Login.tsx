@@ -14,12 +14,11 @@ type Inputs = {
   email: String;
   password: String;
 };
-import { useDispatch } from "react-redux";
-import { login } from "../../store/user.slice";
+
+
 
 function Login() {
   const navigate = useNavigate();
-  const dispacth = useDispatch();
 
   const {
     register,
@@ -54,12 +53,6 @@ function Login() {
             draggable: true,
             theme: "colored",
           });
-          dispacth(
-            login({
-              username: data.data.userData.username,
-              email: data.data.userData.email,
-            })
-          );
           navigate("/");
         } else {
           toast.error(data.message, {

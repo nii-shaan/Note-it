@@ -1,5 +1,3 @@
-import store from "../store/store";
-import { logout } from "../store/user.slice";
 import { toast } from "react-toastify";
 interface LogoutUtilParam {
   showToast?: boolean;
@@ -13,7 +11,6 @@ const logoutUtil = async ({ showToast = false, msg }: LogoutUtilParam = {}) => {
   );
   const data = await response.json();
   if (data.success) {
-    store.dispatch(logout());
     if (showToast && msg) {
       toast.error(msg, {
         position: "bottom-center",

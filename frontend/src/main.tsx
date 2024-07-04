@@ -14,10 +14,6 @@ import {
   theme as chakraTheme,
 } from "@chakra-ui/react";
 
-import store from "./store/store.ts";
-import { Provider } from "react-redux";
-import ProtectedRoute from "./components/self/ProtectedRoute.tsx";
-
 const { Button, Input } = chakraTheme.components;
 
 const theme = extendBaseTheme({
@@ -37,14 +33,7 @@ const route = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/notes"
-        element={
-          <ProtectedRoute>
-            <Notes />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/notes" element={<Notes />} />
     </Route>
   )
 );
@@ -52,9 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ChakraBaseProvider theme={theme}>
-      <Provider store={store}>
-        <RouterProvider router={route} />
-      </Provider>
+      <RouterProvider router={route} />
     </ChakraBaseProvider>
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>

@@ -1,9 +1,8 @@
 import { NavLink } from "react-router-dom";
 import logoutUtil from "../../utils/logout";
-import { useAppSelector } from "../../hooks/ReduxHooks";
 
 function NavBar() {
-  const userStatus = useAppSelector((state) => state.user);
+
 
   const navItemStyleActive =
     "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-green-800 text-text";
@@ -20,7 +19,7 @@ function NavBar() {
         Home
       </NavLink>
 
-      {!userStatus.loggedIn ? (
+    
         <>
           <NavLink
             to="/login"
@@ -40,7 +39,7 @@ function NavBar() {
             Register
           </NavLink>
         </>
-      ) : (
+      
         <>
           <NavLink
             to="/notes"
@@ -58,7 +57,7 @@ function NavBar() {
             Logout
           </button>
         </>
-      )}
+      
     </div>
   );
 }
