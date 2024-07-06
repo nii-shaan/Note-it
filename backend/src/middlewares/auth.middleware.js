@@ -8,7 +8,6 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
   // console.log("JWT middleware test")
   try {
     console.log(" RECEIVED on verifyJWT Middleware");
-
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization"?.replace("Bearer", ""));
@@ -16,7 +15,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     if (!token) {
       return res
         .status(401)
-        .json(new ApiResponse(401, null, "Tokens not provided", false));
+        .json(new ApiResponse(401, null, "Tokens not provided", false,false));
     }
 
     const decodedToken = await jwt.verify(
@@ -31,7 +30,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     if (!user) {
       return res
         .status(400)
-        .json(new ApiResponse(400, null, "Invalid access token", false));
+        .json(new ApiResponse(400, null, "Invalid access token", false,false));
     }
     req.user = user;
     next();
@@ -44,7 +43,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
         return res
           .status(401)
           .json(
-            new ApiResponse(401, null, "Refresh token is not provided", false)
+            new ApiResponse(401, null, "Refresh token is not provided", false,false)
           );
       }
 
@@ -59,7 +58,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
         if (!user) {
           return res
             .status(400)
-            .json(new ApiResponse(400, null, "Invalid refresh token", false));
+            .json(new ApiResponse(400, null, "Invalid refresh token", false,false));
         }
         if (incommingRefreshToken !== user?.refreshToken) {
           return res
@@ -69,6 +68,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
                 401,
                 null,
                 "Refresh token is expired or used",
+                false,
                 false
               )
             );
@@ -90,6 +90,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
               200,
               { newAccessToken: newAccessToken },
               "Access token refreshed",
+              false,
               false
             )
           );
@@ -109,12 +110,12 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
               secure: false,
             })
             .json(
-              new ApiResponse(403, null, "Refresh token is expired", false)
+              new ApiResponse(403, null, "Refresh token is expired", false,false)
             );
         }
         return res
           .status(400)
-          .json(new ApiResponse(403, null, refreshErr.message, false));
+          .json(new ApiResponse(403, null, refreshErr.message, false,false));
       }
     }
   }

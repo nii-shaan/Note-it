@@ -50,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, user, "User created Sucessfully"));
+    .json(new ApiResponse(200, user, "User created Sucessfully", true, false));
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -60,7 +60,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!query) {
     return res
       .status(404)
-      .json(new ApiResponse(404, null, "User not found", false));
+      .json(new ApiResponse(404, null, "User not found", false, false));
   }
 
   const passwordValidCheck = await bcrypt.compare(password, query.password);
@@ -68,7 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!passwordValidCheck) {
     return res
       .status(406)
-      .json(new ApiResponse(406, null, "Invalid Credentials", false));
+      .json(new ApiResponse(406, null, "Invalid Credentials", false, false));
   }
 
   const accessToken = await generateAccessToken(query._id);
@@ -95,7 +95,9 @@ const loginUser = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         { userData, accessToken, refreshToken },
-        "User Logged in"
+        "User Logged in",
+        true,
+        true
       )
     );
 });
