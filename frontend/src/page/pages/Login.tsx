@@ -5,17 +5,16 @@ import {
   FaRegEye as OpenEye,
   FaRegEyeSlash as SlashedEye,
 } from "react-icons/fa";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
 import { Button } from "@/components/ui/button";
+import { useLoginUser } from "@/hooks/useLogin";
 
 type Inputs = {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 };
-
-
 
 function Login() {
   const navigate = useNavigate();
@@ -31,42 +30,15 @@ function Login() {
   const handlePasswordChange = () => {
     setPasswordShown((prev) => !prev);
   };
+  const { mutate, isPending } = useLoginUser();
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/login`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    mutate(data, {
+      onSuccess: (data) => {
         console.log(data);
-        if (data.success) {
-          toast.success(data.message, {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: true,
-            pauseOnHover: false,
-            closeOnClick: true,
-            draggable: true,
-            theme: "colored",
-          });
-          navigate("/");
-        } else {
-          toast.error(data.message, {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: true,
-            pauseOnHover: false,
-            closeOnClick: true,
-            draggable: true,
-            theme: "colored",
-          });
-        }
-        reset({ email: "", password: "" });
-      });
+      },
+    });
+    reset({ email: "", password: "" });
   };
   return (
     <>
@@ -148,7 +120,7 @@ function Login() {
                 type="submit"
                 className="text-text border p-2 m-5 hover:text-main"
               >
-                Login
+                {isPending ? "Logging in..." : "Login"}
               </Button>
             </div>
           </div>

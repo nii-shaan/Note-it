@@ -4,7 +4,10 @@ interface LogoutUtilParam {
   msg?: string;
 }
 
-const logoutUtil = async ({ showToast = false, msg }: LogoutUtilParam = {}) => {
+export const logout = async ({
+  showToast = false,
+  msg,
+}: LogoutUtilParam = {}) => {
   const response = await fetch(
     `${import.meta.env.VITE_API_ENDPOINT}/user/logout`,
     { credentials: "include" }
@@ -45,4 +48,4 @@ const logoutUtil = async ({ showToast = false, msg }: LogoutUtilParam = {}) => {
   }
   return await data;
 };
-export default logoutUtil;
+
