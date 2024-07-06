@@ -108,9 +108,16 @@ const logout = asyncHandler((req, res) => {
   res.status(200).send(new ApiResponse(200, null, "Logout success", true));
 });
 
+const verifyUser = asyncHandler(async (req, res) => {
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, "User verified success", true, true));
+});
+
 module.exports = {
   registerUser,
   loginUser,
   logout,
   generateAccessToken,
+  verifyUser
 };
