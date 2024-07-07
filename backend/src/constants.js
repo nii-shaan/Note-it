@@ -1,5 +1,5 @@
-const DB_NAME = "NoteApp"
+const DB_NAME = "NoteApp";
 
-module.exports={
-    DB_NAME
-}
+module.exports = {
+  DB_NAME,
+};

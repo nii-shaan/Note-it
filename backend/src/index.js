@@ -25,5 +25,3 @@ app.use("/user", userRouter);
 
 const notesRouter = require("./routes/notes.route.js");
 app.use("/notes", notesRouter);
-
-

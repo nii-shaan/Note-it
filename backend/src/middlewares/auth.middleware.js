@@ -15,7 +15,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     if (!token) {
       return res
         .status(401)
-        .json(new ApiResponse(401, null, "Tokens not provided", false,false));
+        .json(new ApiResponse(401, null, "Tokens not provided", false, false));
     }
 
     const decodedToken = await jwt.verify(
@@ -30,7 +30,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
     if (!user) {
       return res
         .status(400)
-        .json(new ApiResponse(400, null, "Invalid access token", false,false));
+        .json(new ApiResponse(400, null, "Invalid access token", false, false));
     }
     req.user = user;
     next();
@@ -43,7 +43,13 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
         return res
           .status(401)
           .json(
-            new ApiResponse(401, null, "Refresh token is not provided", false,false)
+            new ApiResponse(
+              401,
+              null,
+              "Refresh token is not provided",
+              false,
+              false
+            )
           );
       }
 
@@ -58,7 +64,9 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
         if (!user) {
           return res
             .status(400)
-            .json(new ApiResponse(400, null, "Invalid refresh token", false,false));
+            .json(
+              new ApiResponse(400, null, "Invalid refresh token", false, false)
+            );
         }
         if (incommingRefreshToken !== user?.refreshToken) {
           return res
@@ -110,12 +118,18 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
               secure: false,
             })
             .json(
-              new ApiResponse(403, null, "Refresh token is expired", false,false)
+              new ApiResponse(
+                403,
+                null,
+                "Refresh token is expired",
+                false,
+                false
+              )
             );
         }
         return res
           .status(400)
-          .json(new ApiResponse(403, null, refreshErr.message, false,false));
+          .json(new ApiResponse(403, null, refreshErr.message, false, false));
       }
     }
   }

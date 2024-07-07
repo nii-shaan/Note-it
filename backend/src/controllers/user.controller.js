@@ -119,5 +119,5 @@ module.exports = {
   loginUser,
   logout,
   generateAccessToken,
-  verifyUser
+  verifyUser,
 };

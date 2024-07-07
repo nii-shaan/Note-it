@@ -1,10 +1,5 @@
-
-
 function Home() {
-
-  return (
-    <div className='h-[1200px]'>Home</div>
-  )
+  return <div className="h-[1200px]">Home</div>;
 }
 
-export default Home
+export default Home;
