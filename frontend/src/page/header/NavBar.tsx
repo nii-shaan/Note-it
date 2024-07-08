@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { logout } from "../../utils/user";
+import { useUserStatus } from "@/hooks/useUser";
 
 function NavBar() {
+  const { data, isPending } = useUserStatus();
+  if (!isPending) console.log(data);
+
   const navItemStyleActive =
     "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-green-800 text-text";
   const navItemStyleInActive =
