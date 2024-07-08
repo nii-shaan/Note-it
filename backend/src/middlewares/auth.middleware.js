@@ -84,7 +84,8 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
 
         const options = {
           httpOnly: true,
-          secure: false,
+          secure: true,
+          sameSite: "None",
         };
 
         const newAccessToken = await generateAccessToken(user._id);
@@ -110,12 +111,14 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
             .clearCookie("accessToken", {
               path: "/",
               httpOnly: true,
-              secure: false,
+              secure: true,
+              sameSite: "None",
             })
             .clearCookie("refreshToken", {
               path: "/",
               httpOnly: true,
-              secure: false,
+              secure: true,
+              sameSite: "None",
             })
             .json(
               new ApiResponse(

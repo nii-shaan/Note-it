@@ -6,17 +6,14 @@ interface Login {
 }
 
 const loginUser = async ({ email, password }: Login) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_ENDPOINT}/user/login`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`/api/user/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+    credentials: "include",
+  });
   return await response.json();
 };
 

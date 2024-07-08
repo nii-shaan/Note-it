@@ -79,8 +79,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: false,
-    sameSite: "none",
+    secure: true,
+    sameSite: "None",
   };
 
   const userData = await User.findById(query._id).select(
@@ -103,8 +103,18 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler((req, res) => {
-  res.clearCookie("accessToken", { path: "/", httpOnly: true, secure: true });
-  res.clearCookie("refreshToken", { path: "/", httpOnly: true, secure: true });
+  res.clearCookie("accessToken", {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  res.clearCookie("refreshToken", {
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
   res.status(200).send(new ApiResponse(200, null, "Logout success", true));
 });
 

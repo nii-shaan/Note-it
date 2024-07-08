@@ -5,8 +5,12 @@ function Notes() {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const response = await fetch("http://localhost:8000/notes/getNotes", {
+      const response = await fetch("/api/notes/getNotes", {
+        method: "GET",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       const result = await response.json();
       setData(result);
