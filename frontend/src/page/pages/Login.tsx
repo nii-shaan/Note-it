@@ -5,12 +5,13 @@ import {
   FaRegEye as OpenEye,
   FaRegEyeSlash as SlashedEye,
 } from "react-icons/fa";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
 import { Button } from "@/components/ui/button";
 import { useLoginUser } from "@/hooks/useLogin";
-
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { login } from "@/store/Auth.slice";
 
 type Inputs = {
   email: string;
@@ -18,6 +19,7 @@ type Inputs = {
 };
 
 function Login() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const {
@@ -37,7 +39,13 @@ function Login() {
     mutate(data, {
       onSuccess: (data) => {
         console.log(data);
-        if(data.isAuthenticated){}
+        if (data.isAuthenticated) {
+          dispatch(login());
+          navigate("/");
+          toast.success("Login Success");
+        }else{
+          toast.error(data.message)
+        }
       },
     });
     reset({ email: "", password: "" });
