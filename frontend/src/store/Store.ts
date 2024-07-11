@@ -4,8 +4,8 @@ import LoadingSlice from "./Loading.slice";
 
 export const store = configureStore({
   reducer: {
-    AuthSlice,
-    LoadingSlice,
+    auth: AuthSlice,
+    loading: LoadingSlice,
   },
 });
 

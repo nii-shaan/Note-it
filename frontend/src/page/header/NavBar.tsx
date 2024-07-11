@@ -3,7 +3,7 @@ import { logout } from "../../utils/user";
 import { useAppSelector } from "@/hooks/reduxHooks";
 
 function NavBar() {
-  const isLoggedIn = useAppSelector((state) => state.AuthSlice.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   const navItemStyleActive =
     "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-green-800 text-text";

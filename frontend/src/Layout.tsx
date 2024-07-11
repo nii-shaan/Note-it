@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserStatus } from "./hooks/useUser.ts";
 import { useAppDispatch } from "./hooks/reduxHooks.ts";
-import { login } from "./store/Auth.slice.ts";
+import { login, logout } from "./store/Auth.slice.ts";
 import { useNavigate } from "react-router-dom";
 
 function Layout() {
@@ -16,16 +16,17 @@ function Layout() {
     queryKey: ["user"],
     queryFn: fetchUserStatus,
   });
-  
+
   useEffect(() => {
-    console.log(data)
+    console.log(data);
     if (isLoading || isPending) {
       //TODO
     } else {
       if (isSuccess && data.isAuthenticated) {
         dispatch(login());
-      } else{
-        navigate("/")
+      } else {
+        navigate("/");
+        dispatch(logout());
       }
     }
   }, [navigate, data]);
@@ -36,15 +37,15 @@ function Layout() {
       <Outlet />
       <ToastContainer
         position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick={true}
         rtl={false}
-        pauseOnFocusLoss
+        pauseOnFocusLoss={false}
         draggable
-        pauseOnHover
-        theme="colored"
+        pauseOnHover={false}
+        theme="dark"
       />
       <Footer />
     </>
