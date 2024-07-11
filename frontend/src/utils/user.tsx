@@ -1,51 +1,18 @@
 import { toast } from "react-toastify";
 interface LogoutUtilParam {
-  showToast?: boolean;
   msg?: string;
 }
 
-export const logout = async ({
-  showToast = false,
-  msg,
-}: LogoutUtilParam = {}) => {
+export const logout = async ({ msg }: LogoutUtilParam = {}) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_ENDPOINT}/user/logout`,
+    `${import.meta.env.VITE_API_ENDPOINT}/api/user/logout`,
     { credentials: "include" }
   );
   const data = await response.json();
   if (data.success) {
-    if (showToast && msg) {
-      toast.error(msg, {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        pauseOnHover: false,
-        closeOnClick: true,
-        draggable: true,
-        theme: "colored",
-      });
-    } else if (showToast) {
-      toast.success(data.message, {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        pauseOnHover: false,
-        closeOnClick: true,
-        draggable: true,
-        theme: "colored",
-      });
-    } else {
-      toast.error("Logout failed", {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        pauseOnHover: false,
-        closeOnClick: true,
-        draggable: true,
-        theme: "colored",
-      });
-    }
+    toast.success(msg || data.message);
+  } else {
+    toast.error("Logout failed");
   }
   return await data;
 };
-

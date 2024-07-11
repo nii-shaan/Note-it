@@ -24,7 +24,9 @@ function Layout() {
     } else {
       if (isSuccess && data.isAuthenticated) {
         dispatch(login());
-      } 
+      } else{
+        navigate("/")
+      }
     }
   }, [navigate, data]);
 

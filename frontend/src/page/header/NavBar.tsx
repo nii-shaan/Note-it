@@ -50,10 +50,7 @@ function NavBar() {
             Notes
           </NavLink>
 
-          <button
-            className={navItemStyleInActive}
-            onClick={() => logout({ showToast: true })}
-          >
+          <button className={navItemStyleInActive} onClick={() => logout()}>
             Logout
           </button>
         </>
