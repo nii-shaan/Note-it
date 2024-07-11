@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { logout } from "../../utils/user";
 import { useUserStatus } from "@/hooks/useUser";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 function NavBar() {
+  const isLoggedIn = useAppSelector((state) => state.AuthSlice.isLoggedIn);
   const { data, isPending } = useUserStatus();
   if (!isPending) console.log(data);
 
@@ -20,44 +22,45 @@ function NavBar() {
       >
         Home
       </NavLink>
+      {!isLoggedIn ? (
+        <>
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Login
+          </NavLink>
 
-      <>
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
-          }
-        >
-          Login
-        </NavLink>
+          <NavLink
+            to="/register"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Register
+          </NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink
+            to="/notes"
+            className={({ isActive }) =>
+              isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
+            }
+          >
+            Notes
+          </NavLink>
 
-        <NavLink
-          to="/register"
-          className={({ isActive }) =>
-            isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
-          }
-        >
-          Register
-        </NavLink>
-      </>
-
-      <>
-        <NavLink
-          to="/notes"
-          className={({ isActive }) =>
-            isActive ? `${navItemStyleActive}` : `${navItemStyleInActive}`
-          }
-        >
-          Notes
-        </NavLink>
-
-        <button
-          className={navItemStyleInActive}
-          onClick={() => logout({ showToast: true })}
-        >
-          Logout
-        </button>
-      </>
+          <button
+            className={navItemStyleInActive}
+            onClick={() => logout({ showToast: true })}
+          >
+            Logout
+          </button>
+        </>
+      )}
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { CiLogin } from "react-icons/ci";
 import { Button } from "@/components/ui/button";
 import { useLoginUser } from "@/hooks/useLogin";
 
+
 type Inputs = {
   email: string;
   password: string;
@@ -36,6 +37,7 @@ function Login() {
     mutate(data, {
       onSuccess: (data) => {
         console.log(data);
+        if(data.isAuthenticated){}
       },
     });
     reset({ email: "", password: "" });
