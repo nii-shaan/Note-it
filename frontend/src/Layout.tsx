@@ -45,7 +45,7 @@ function Layout() {
         pauseOnFocusLoss={false}
         draggable
         pauseOnHover={false}
-        theme="dark"
+        theme="colored"
       />
       <Footer />
     </>

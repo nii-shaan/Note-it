@@ -6,7 +6,7 @@ function NavBar() {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   const navItemStyleActive =
-    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-green-800 text-text";
+    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-third text-text";
   const navItemStyleInActive =
     "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-[#495464] hover:text-text bg-second";
   return (
