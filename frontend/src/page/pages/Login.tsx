@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Input } from "@chakra-ui/react";
+import { Input, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import {
   FaRegEye as OpenEye,
@@ -8,7 +8,6 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { CiLogin } from "react-icons/ci";
-import { Button } from "@/components/ui/button";
 import { useLoginUser } from "@/hooks/useLogin";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { login } from "@/store/Auth.slice";
@@ -127,8 +126,9 @@ function Login() {
             <div id="button" className="w-full flex justify-center">
               <Button
                 variant="outline"
+		colorScheme="cyan"
                 type="submit"
-                className="text-text border p-2 m-5 hover:text-main"
+                className="text-text border p-2 m-5 hover:text-main "
               >
                 {isPending ? "Logging in..." : "Login"}
               </Button>
