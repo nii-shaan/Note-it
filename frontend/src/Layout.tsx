@@ -6,13 +6,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch} from "./hooks/reduxHooks.ts";
 import { login, logout } from "./store/Auth.slice.ts";
 import { useNavigate } from "react-router-dom";
-
+import { setNavigate } from "./utils/navigateHelper.ts";
 function Layout() {
+	
+	console.log("layout mounted")
 	const navigate = useNavigate();
+	//setting global navigate function
+	setNavigate(navigate)
+
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState<boolean>(true)
 
+
 	useEffect(() => {
+
 		const fetchY = async () => {
 			const response = await fetch("/api/user/verifyUser")
 			const result = await response.json()

@@ -1,6 +1,9 @@
 import { toast } from "react-toastify";
 import { logout as logoutState } from "@/store/Auth.slice";
 import { store } from "@/store/Store";
+import { navigateTo } from "./navigateHelper";
+
+
 interface LogoutUtilParam {
 	msg?: string;
 	showToast?: boolean;
@@ -29,7 +32,7 @@ export const logout = async ({
 			}
 		}
 		store.dispatch(logoutState());
-//		window.history.pushState({}, '', '/');
+		navigateTo("/")
 	} else {
 		toast.error("Logout failed");
 	}
