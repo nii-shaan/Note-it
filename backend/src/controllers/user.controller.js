@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const generateAccessToken = async (userId) => {
 	const user = await User.findById(userId);
 
-	return await jwt.sign(
+	return jwt.sign(
 		{ id: user._id, username: user.username, email: user.email },
 		process.env.AUTH_ACCESS_TOKEN_SECRET_KEY,
 		{
@@ -19,7 +19,7 @@ const generateAccessToken = async (userId) => {
 
 const generateRefreshToken = async (userId) => {
 	const user = await User.findById(userId);
-	return await jwt.sign(
+	return jwt.sign(
 		{ id: user._id },
 		process.env.AUTH_REFRESH_TOKEN_SECRET_KEY,
 		{

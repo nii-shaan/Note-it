@@ -15,9 +15,6 @@ class Response {
 }
 
 
-
-
-
 interface LogoutUtilParam {
 	msg?: string;
 	showToast?: boolean;

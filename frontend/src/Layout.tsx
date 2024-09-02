@@ -3,17 +3,16 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAppDispatch} from "./hooks/reduxHooks.ts";
+import { useAppDispatch } from "./hooks/reduxHooks.ts";
 import { login, logout } from "./store/Auth.slice.ts";
 import { useNavigate } from "react-router-dom";
 import { setNavigate } from "./utils/navigateHelper.ts";
+import { fetchEn, logout as myLogout } from "./utils/user.tsx";
 function Layout() {
-	
-	console.log("layout mounted")
+
 	const navigate = useNavigate();
 	//setting global navigate function
 	setNavigate(navigate)
-
 	const dispatch = useAppDispatch();
 	const [loading, setLoading] = useState<boolean>(true)
 
@@ -21,16 +20,20 @@ function Layout() {
 	useEffect(() => {
 
 		const fetchY = async () => {
-			const response = await fetch("/api/user/verifyUser")
-			const result = await response.json()
+			try {
+				const result = await fetchEn("/api/user/verifyUser")
 
-			if (result.isAuthenticated) {
-				dispatch(login())
-				setLoading(false)
-			} else {
-				navigate("/")
-				dispatch(logout())
-				setLoading(false)
+				if (result.isAuthenticated && result.success) {
+					dispatch(login())
+					setLoading(false)
+				} else {
+					navigate("/")
+					dispatch(logout())
+					setLoading(false)
+				}
+			}
+			catch (e) {
+				myLogout({ showToast: false })
 			}
 		}
 
