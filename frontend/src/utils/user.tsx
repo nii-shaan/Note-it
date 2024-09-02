@@ -4,6 +4,20 @@ import { store } from "@/store/Store";
 import { navigateTo } from "./navigateHelper";
 
 
+
+class Response {
+	success: boolean
+	message: string
+	constructor(success: boolean = false, message: string = "Error Occured") {
+		this.success = success;
+		this.message = message
+	}
+}
+
+
+
+
+
 interface LogoutUtilParam {
 	msg?: string;
 	showToast?: boolean;
@@ -39,7 +53,48 @@ export const logout = async ({
 	return await data;
 };
 
-export const fetchEn = async ({ }) => {
+export const fetchEn = async (url: string) => {
 
+	try {
+		const response = await fetch(`${url}`, {
+			method: "GET",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
 
+		const result = await response.json();
+		if (result.message === "Access token refreshed" && result.statusCode === 200 && !result.success) {
+			const response = await fetch(`${url}`, {
+				method: "GET",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+
+			const result1 = await response.json();
+			return await result1;
+
+		} else if (result.message === "Refresh token is expired" && result.statusCode === 403) {
+			logout({ msg: "Session expired!", showToast: true, type: "error" })
+			return new Response()
+
+		} else if (result.message === "Tokens not provided" && !result.success) {
+			logout({ showToast: false })
+
+		} else {
+			return await result
+		}
+		return result
+
+	}
+	catch (e) {
+		return new Response()
+	}
 }
+
+
+
+
