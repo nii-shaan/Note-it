@@ -1,6 +1,7 @@
-import { logout } from "@/utils/user";
 import { useEffect, useState } from "react";
 import { fetchEn } from "@/utils/user";
+import AddNote from "@/components/self/AddNote";
+
 function Notes() {
 	const [data, setData] = useState({ test: "not sure" });
 
@@ -8,16 +9,24 @@ function Notes() {
 
 		const fetchNotes = async () => {
 			const result = await fetchEn("/api/notes/getNotes")
-			if (result.success===undefined) {
+			if (result.success === undefined) {
 				return ""
-			}else if(result.success){
+			} else if (result.success) {
 				setData(result)
 			}
 
 		}
 		fetchNotes()
 	}, []);
-	return <div className="text-text">data : {data.test}</div>;
+	return (
+		<>
+			<AddNote />
+			<div className="text-text">data : {data.test}</div>;
+
+		</>
+	)
+
+
 }
 
 export default Notes;
