@@ -1,6 +1,6 @@
 const asyncHandler = require("../utils/asyncHandler");
 
-const noteController = asyncHandler((req, res) => {
+const postNote= asyncHandler((req, res) => {
 	return res.json({
 		test: "passed",
 		success: true
@@ -8,5 +8,5 @@ const noteController = asyncHandler((req, res) => {
 });
 
 module.exports = {
-	noteController,
+	postNote,
 };
