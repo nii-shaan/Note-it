@@ -8,7 +8,7 @@ function Notes() {
 	useEffect(() => {
 
 		const fetchNotes = async () => {
-			const result = await fetchEn("/api/notes/getNotes")
+			const result = await fetchEn("/api/notes/postNote")
 			if (result.success === undefined) {
 				return ""
 			} else if (result.success) {
