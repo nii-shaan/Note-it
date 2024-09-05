@@ -16,13 +16,10 @@ function Notes() {
 			}
 
 		}
-		fetchNotes()
 	}, []);
 	return (
 		<>
 			<AddNote />
-			<div className="text-text">data : {data.test}</div>;
-
 		</>
 	)
 
