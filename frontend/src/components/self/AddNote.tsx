@@ -53,7 +53,7 @@ function AddNote() {
 				}
 			}
 			catch (e) {
-				console.log("ERRORR while posting note")
+				toast.error("Something went wrong!")
 			}
 
 		}

@@ -1,6 +1,5 @@
 const asyncHandler = require("../utils/asyncHandler");
 const ApiResponse = require("../utils/ApiResponse");
-const ApiError = require("../utils/ApiError");
 const Note = require("../model/note.model.js")
 
 const postNote = asyncHandler(async (req, res) => {
@@ -36,6 +35,17 @@ const postNote = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, note, "Note posted", true, true))
 });
 
+const getAllNotes = asyncHandler(async (req, res) => {
+
+	const user = req.user
+	const notes = await Note.find({ owner: user })
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, notes, `${user.email} All Notes retrieved`, true, true))
+
+})
 module.exports = {
 	postNote,
+	getAllNotes,
 };
