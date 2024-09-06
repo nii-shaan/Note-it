@@ -33,7 +33,7 @@ function Notes() {
 			) : data && data.length === 0 ? (
 				<div>NO NOTES POSTED</div>
 			) : (
-				<div className="flex flex-wrap justify-center gap-x-6 gap-y-6 mt-10 pc:justify-start pc:ml-10">
+				<div className="flex flex-wrap justify-center gap-x-4 gap-y-4 mt-10 pc:justify-start pc:mx-6">
 					{data?.map((item: NOTE) => (
 						<NoteBlock key={item._id} title={item.title} />
 					))}
