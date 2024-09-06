@@ -11,6 +11,7 @@ import { Button } from "@chakra-ui/react";
 import { IoAdd } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useState } from "react";
+import { fetchEn } from "@/utils/user";
 type Inputs = {
 	title: string
 }
@@ -30,6 +31,35 @@ function AddNote() {
 
 	const onSubmit: SubmitHandler<Inputs> = (data) => {
 		console.log(data)
+		const postNote = async () => {
+
+			try {
+
+				const response = await fetch("/api/notes/postNote", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					credentials: "include",
+					body: JSON.stringify(data),
+
+
+				})
+				const result = await response.json()
+				if (result.success) {
+					console.log("Note posted")
+				} else {
+					console.log("Note posting failed >> ", result.message)
+				}
+			}
+			catch (e) {
+				console.log("ERRORR while posting note")
+			}
+
+		}
+
+
+		postNote()
 		setOpen(false)
 		reset()
 
@@ -75,7 +105,7 @@ function AddNote() {
 						</div>
 						<div className="flex justify-center gap-x-5">
 							<DialogClose asChild>
-								<Button colorScheme="red" variant="outline">Cancel</Button>
+								<Button colorScheme="red" variant="outline" onClick={() => { reset() }}>Cancel</Button>
 							</DialogClose>
 							<Button colorScheme="green" variant="outline" type="submit">Create</Button>
 						</div>

@@ -1,15 +1,14 @@
 import { NavBar, Footer } from "./page/index.ts";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppDispatch } from "./hooks/reduxHooks.ts";
 import { login, logout } from "./store/Auth.slice.ts";
-import { useNavigate } from "react-router-dom";
 import { setNavigate } from "./utils/navigateHelper.ts";
 import { fetchEn, logout as myLogout } from "./utils/user.tsx";
 function Layout() {
-
+	const location = useLocation()
 	const navigate = useNavigate();
 	//setting global navigate function
 	setNavigate(navigate)
@@ -18,7 +17,6 @@ function Layout() {
 
 
 	useEffect(() => {
-
 		const fetchY = async () => {
 			try {
 				const result = await fetchEn("/api/user/verifyUser")

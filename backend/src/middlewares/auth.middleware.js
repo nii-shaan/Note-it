@@ -89,7 +89,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
 				};
 
 				const newAccessToken = await generateAccessToken(user._id);
-				res
+				return res
 					.status(200)
 					.cookie("accessToken", newAccessToken, options)
 					.json(
@@ -101,7 +101,7 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
 							false
 						)
 					);
-				next();
+				//	next();
 			} catch (refreshErr) {
 				if (refreshErr.message === "jwt expired") {
 					return res
