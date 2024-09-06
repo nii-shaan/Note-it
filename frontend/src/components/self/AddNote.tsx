@@ -11,7 +11,7 @@ import { Button } from "@chakra-ui/react";
 import { IoAdd } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useState } from "react";
-import { fetchEn } from "@/utils/user";
+import { toast } from "react-toastify";
 type Inputs = {
 	title: string
 }
@@ -47,9 +47,9 @@ function AddNote() {
 				})
 				const result = await response.json()
 				if (result.success) {
-					console.log("Note posted")
+					toast.success(`Note created: ${result.data.title}`)
 				} else {
-					console.log("Note posting failed >> ", result.message)
+					toast.error(`FAILED! ${result.message}`)
 				}
 			}
 			catch (e) {
