@@ -1,7 +1,6 @@
 import { fetchEn } from "@/utils/user";
 import AddNote from "@/components/self/AddNote";
 import NoteBlock from "@/components/self/NoteBlock";
-
 import { useQuery } from "@tanstack/react-query";
 
 
@@ -21,13 +20,10 @@ function Notes() {
 		return result.data
 	}
 
-
 	const { isLoading, data } = useQuery({
 		queryKey: ['notes'],
 		queryFn: fetchNotes
 	})
-
-
 
 	return (
 		<>

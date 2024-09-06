@@ -11,16 +11,16 @@ import { Button } from "@chakra-ui/react";
 import { IoAdd } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useState } from "react";
-import { toast } from "react-toastify";
 type Inputs = {
 	title: string
 }
+import { usePostNote } from "@/hooks/usePostNote";
 
 
 
 function AddNote() {
 	const [open, setOpen] = useState(false);
-
+	const { mutate } = usePostNote()
 	const {
 		register,
 		handleSubmit,
@@ -28,38 +28,9 @@ function AddNote() {
 		formState: { errors },
 	} = useForm<Inputs>()
 
-
-	const onSubmit: SubmitHandler<Inputs> = (data) => {
-		console.log(data)
-		const postNote = async () => {
-
-			try {
-
-				const response = await fetch("/api/notes/postNote", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json"
-					},
-					credentials: "include",
-					body: JSON.stringify(data),
-
-
-				})
-				const result = await response.json()
-				if (result.success) {
-					toast.success(`Note created: ${result.data.title}`)
-				} else {
-					toast.error(`FAILED! ${result.message}`)
-				}
-			}
-			catch (e) {
-				toast.error("Something went wrong!")
-			}
-
-		}
-
-
-		postNote()
+	const onSubmit: SubmitHandler<Inputs> = (d) => {
+		console.log(d)
+		mutate(d)
 		setOpen(false)
 		reset()
 
