@@ -45,7 +45,28 @@ const getAllNotes = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, notes, `${user.email} All Notes retrieved`, true, true))
 
 })
+
+const getNoteByTitle = asyncHandler(async (req, res) => {
+
+	const { title } = req.params
+	const owner = req.user
+
+
+	const note = await Note.findOne({ title, owner })
+
+	if (!note) {
+		return res
+			.status(404)
+			.json(new ApiResponse(404, null, "Note not found!", true, true))
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, note, `title: ${title}`, true, true))
+
+})
 module.exports = {
 	postNote,
 	getAllNotes,
+	getNoteByTitle
 };
