@@ -2,17 +2,10 @@ import { fetchEn } from "@/utils/user";
 import AddNote from "@/components/self/AddNote";
 import NoteBlock from "@/components/self/NoteBlock";
 import { useQuery } from "@tanstack/react-query";
+import type { NOTE } from "@/types";
 
 
-interface NOTE {
-	_id: string;
-	title: string;
-	content: string;
-	owner: string;
-	createdAt: string;
-	updatedAt: string;
-	__v: number | string;
-}
+
 function Notes() {
 	const fetchNotes = async () => {
 		const result = await fetchEn("/api/notes/getAllNotes")
