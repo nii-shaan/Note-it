@@ -62,7 +62,7 @@ const getNoteByTitle = asyncHandler(async (req, res) => {
 
 	return res
 		.status(200)
-		.json(new ApiResponse(200, note, `title: ${title}`, true, true))
+		.json(new ApiResponse(200, note, `${title} Note fetched`, true, true))
 
 })
 module.exports = {
