@@ -57,7 +57,13 @@ const getNoteByTitle = asyncHandler(async (req, res) => {
 	if (!note) {
 		return res
 			.status(404)
-			.json(new ApiResponse(404, null, "Note not found!", true, true))
+			.json(new ApiResponse(404, null, "Note not found!", false, true))
+	}
+
+	if (!title) {
+		return res
+			.status(406)
+			.json(new ApiResponse(406, null, "title not provided", true, true))
 	}
 
 	return res
@@ -65,8 +71,49 @@ const getNoteByTitle = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, note, `${title} Note fetched`, true, true))
 
 })
+
+
+const updateTitle = asyncHandler(async (req, res) => {
+
+	const { oldTitle, newTitle } = req.body
+	const owner = req.user
+
+
+	if (!oldTitle || !newTitle) {
+		return res
+			.status(406)
+			.json(new ApiResponse(406, null, "both oldTitle & newTitle should be provided!", false, true))
+
+	}
+
+	if (oldTitle === newTitle) {
+		return res
+			.status(406)
+			.json(new ApiResponse(406, null, "oldTitle and newTitle are same!", false, true))
+	}
+
+	const note = await Note.findOne({ title: oldTitle, owner })
+
+	if (!note) {
+		return res
+			.status(404)
+			.json(new ApiResponse(404, null, "note not found!", false, true))
+	}
+
+
+	const updatedNote = await Note.findByIdAndUpdate(note.id, { title: newTitle }, { new: true })
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, updatedNote, `${oldTitle} updated to ${newTitle}`, true, true))
+})
+
+
+
+
 module.exports = {
 	postNote,
 	getAllNotes,
-	getNoteByTitle
+	getNoteByTitle,
+	updateTitle
 };
