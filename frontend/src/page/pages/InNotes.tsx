@@ -57,13 +57,12 @@ function InNotes() {
 					})
 
 					const result = await response.json()
-
 					if (result.success) {
 						toast.success(`SUCCESS: ${result.message}`)
 						navigate(`/notes/${result.data.title}`)
+					}else{
+						toast.error(`FAILED: ${result.message}`)
 					}
-
-					console.log(result)
 				} catch (e) {
 					toast.error("Something went wrong!")
 				}
