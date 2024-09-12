@@ -101,7 +101,7 @@ const updateTitle = asyncHandler(async (req, res) => {
 	if (doesNoteWithUpdatedTitleAlreadyExist) {
 		return res
 			.status(406)
-			.json(new ApiResponse(406, null, `A note with title: ${newTitle} already exist!`))
+			.json(new ApiResponse(406, null, `A note with title: ${newTitle} already exist!`, false, true))
 	}
 
 	if (!note) {
