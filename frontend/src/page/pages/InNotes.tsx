@@ -10,6 +10,7 @@ import { fetchEn } from "@/utils/user"
 import { useEffect, useState } from "react"
 import type { NOTE } from "@/types"
 import { useForm, SubmitHandler } from "react-hook-form"
+import { toast } from "react-toastify"
 
 type Inputs = {
 	title: string
@@ -31,17 +32,45 @@ function InNotes() {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<Inputs>({
-		defaultValues:{
+		defaultValues: {
 			title
 		}
 	})
 
-	const onSubmit: SubmitHandler<Inputs> = (d) => {
+	const onSubmit: SubmitHandler<Inputs> = async (d) => {
 
 		if (!editModeTitle) {
-			console.log("submitted")
-		}
+			if (title == d.title) {
+				toast.error("FAILED! Updated title is same as old title!")
 
+			} else {
+				try {
+
+
+					const response = await fetch("/api/notes/updateNoteTitle", {
+						method: "PUT",
+						credentials: "include",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({ oldTitle: title, newTitle: d.title })
+					})
+
+					const result = await response.json()
+
+					if (result.success) {
+						toast.success(`SUCCESS: ${result.message}`)
+						navigate(`/notes/${result.data.title}`)
+					}
+
+					console.log(result)
+				} catch (e) {
+					toast.error("Something went wrong!")
+				}
+
+			}
+
+		}
 	}
 
 	useEffect(() => {
@@ -51,10 +80,7 @@ function InNotes() {
 			setNote(response.data)
 		}
 		fetchNote()
-
 		setTitleFieldValue(title || "")
-
-
 	}, [])
 
 	if (!note) {
@@ -99,7 +125,7 @@ function InNotes() {
 							}
 						/>
 
-						{errors.title && <div className="text-red-500 w-full block mt-1 mx-auto">{errors.title.message}</div>}
+						{errors.title && <div className="text-red-500 w-full tablet:w-auto tablet:inline-block mt-1 mx-auto">{errors.title.message}</div>}
 
 						<button
 							type="submit"
