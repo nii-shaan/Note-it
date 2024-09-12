@@ -92,7 +92,17 @@ const updateTitle = asyncHandler(async (req, res) => {
 			.json(new ApiResponse(406, null, "oldTitle and newTitle are same!", false, true))
 	}
 
+
+
 	const note = await Note.findOne({ title: oldTitle, owner })
+
+	const doesNoteWithUpdatedTitleAlreadyExist = await Note.findOne({ title: newTitle, owner })
+
+	if (doesNoteWithUpdatedTitleAlreadyExist) {
+		return res
+			.status(406)
+			.json(new ApiResponse(406, null, `A note with title: ${newTitle} already exist!`))
+	}
 
 	if (!note) {
 		return res
