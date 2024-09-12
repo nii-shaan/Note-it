@@ -119,11 +119,27 @@ const updateTitle = asyncHandler(async (req, res) => {
 })
 
 
+const deleteNote = asyncHandler(async (req, res) => {
 
+	const { title } = req.params;
+	const owner = req.user
+	const note = await Note.findOneAndDelete({ title, owner });
+
+	if (!note) {
+		return res
+			.status(404)
+			.json(new ApiResponse(404, null, "Note not found to delete", false, true))
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, note, `${note.title} deleted`, true, true))
+})
 
 module.exports = {
 	postNote,
 	getAllNotes,
 	getNoteByTitle,
-	updateTitle
+	updateTitle,
+	deleteNote
 };
