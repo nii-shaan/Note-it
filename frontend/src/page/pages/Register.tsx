@@ -37,23 +37,23 @@ function Register() {
       .then((data) => {
         data.success
           ? toast.success(`${data.message}, Please proceed to login`, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-              pauseOnHover: false,
-              closeOnClick: true,
-              draggable: true,
-              theme: "colored",
-            })
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: false,
+            closeOnClick: true,
+            draggable: true,
+            theme: "colored",
+          })
           : toast.error(data.message, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: true,
-              pauseOnHover: false,
-              closeOnClick: true,
-              draggable: true,
-              theme: "colored",
-            });
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            pauseOnHover: false,
+            closeOnClick: true,
+            draggable: true,
+            theme: "colored",
+          });
         reset({
           username: "",
           email: "",

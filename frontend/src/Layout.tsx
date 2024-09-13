@@ -8,56 +8,56 @@ import { login, logout } from "./store/Auth.slice.ts";
 import { setNavigate } from "./utils/navigateHelper.ts";
 import { fetchEn, logout as myLogout } from "./utils/user.tsx";
 function Layout() {
-	const location = useLocation()
-	const navigate = useNavigate();
-	//setting global navigate function
-	setNavigate(navigate)
-	const dispatch = useAppDispatch();
-	const [loading, setLoading] = useState<boolean>(true)
+  const location = useLocation()
+  const navigate = useNavigate();
+  //setting global navigate function
+  setNavigate(navigate)
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState<boolean>(true)
 
 
-	useEffect(() => {
-		const fetchY = async () => {
-			try {
-				const result = await fetchEn("/api/user/verifyUser")
+  useEffect(() => {
+    const fetchY = async () => {
+      try {
+        const result = await fetchEn("/api/user/verifyUser")
 
-				if (result.isAuthenticated && result.success) {
-					dispatch(login())
-					setLoading(false)
-				} else {
-					navigate("/")
-					dispatch(logout())
-					setLoading(false)
-				}
-			}
-			catch (e) {
-				myLogout({ showToast: false })
-			}
-		}
+        if (result.isAuthenticated && result.success) {
+          dispatch(login())
+          setLoading(false)
+        } else {
+          navigate("/")
+          dispatch(logout())
+          setLoading(false)
+        }
+      }
+      catch (e) {
+        myLogout({ showToast: false })
+      }
+    }
 
-		fetchY()
+    fetchY()
 
-	}, [navigate]);
+  }, [navigate]);
 
-	return (
-		<>
-			<NavBar />
-			<Outlet />
-			<ToastContainer
-				position="top-right"
-				autoClose={3000}
-				hideProgressBar={true}
-				newestOnTop={true}
-				closeOnClick={true}
-				rtl={false}
-				pauseOnFocusLoss={false}
-				draggable
-				pauseOnHover={false}
-				theme="colored"
-			/>
-			<Footer />
-		</>
-	);
+  return (
+    <>
+      <NavBar />
+      <Outlet />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="colored"
+      />
+      <Footer />
+    </>
+  );
 }
 
 export default Layout;

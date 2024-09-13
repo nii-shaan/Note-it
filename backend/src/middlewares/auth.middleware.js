@@ -5,135 +5,135 @@ const User = require("../model/user.model.js");
 const { generateAccessToken } = require("../controllers/user.controller.js");
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
-	// console.log("JWT middleware test")
-	try {
-		console.log(" RECEIVED on verifyJWT Middleware");
-		const token =
-			req.cookies?.accessToken ||
-			req.header("Authorization"?.replace("Bearer", ""));
+  // console.log("JWT middleware test")
+  try {
+    console.log(" RECEIVED on verifyJWT Middleware");
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization"?.replace("Bearer", ""));
 
-		if (!token) {
-			return res
-				.status(401)
-				.json(new ApiResponse(401, null, "Tokens not provided", false, false));
-		}
+    if (!token) {
+      return res
+        .status(401)
+        .json(new ApiResponse(401, null, "Tokens not provided", false, false));
+    }
 
-		const decodedToken = jwt.verify(
-			token,
-			process.env.AUTH_ACCESS_TOKEN_SECRET_KEY
-		);
+    const decodedToken = jwt.verify(
+      token,
+      process.env.AUTH_ACCESS_TOKEN_SECRET_KEY
+    );
 
-		const user = await User.findById(decodedToken.id).select(
-			"-password -refreshToken"
-		);
+    const user = await User.findById(decodedToken.id).select(
+      "-password -refreshToken"
+    );
 
-		if (!user) {
-			return res
-				.status(400)
-				.json(new ApiResponse(400, null, "Invalid access token", false, false));
-		}
-		req.user = user;
-		next();
-	} catch (err) {
-		if (err.message === "jwt expired") {
-			const incommingRefreshToken =
-				req.cookies.refreshToken || req.body.refreshToken;
+    if (!user) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Invalid access token", false, false));
+    }
+    req.user = user;
+    next();
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const incommingRefreshToken =
+        req.cookies.refreshToken || req.body.refreshToken;
 
-			if (!incommingRefreshToken) {
-				return res
-					.status(401)
-					.json(
-						new ApiResponse(
-							401,
-							null,
-							"Refresh token is not provided",
-							false,
-							false
-						)
-					);
-			}
+      if (!incommingRefreshToken) {
+        return res
+          .status(401)
+          .json(
+            new ApiResponse(
+              401,
+              null,
+              "Refresh token is not provided",
+              false,
+              false
+            )
+          );
+      }
 
-			try {
-				const decodedRefreshToken = jwt.verify(
-					incommingRefreshToken,
-					process.env.AUTH_REFRESH_TOKEN_SECRET_KEY
-				);
+      try {
+        const decodedRefreshToken = jwt.verify(
+          incommingRefreshToken,
+          process.env.AUTH_REFRESH_TOKEN_SECRET_KEY
+        );
 
-				const user = await User.findById(decodedRefreshToken.id);
+        const user = await User.findById(decodedRefreshToken.id);
 
-				if (!user) {
-					return res
-						.status(400)
-						.json(
-							new ApiResponse(400, null, "Invalid refresh token", false, false)
-						);
-				}
-				if (incommingRefreshToken !== user?.refreshToken) {
-					return res
-						.status(401)
-						.json(
-							new ApiResponse(
-								401,
-								null,
-								"Refresh token is expired or used",
-								false,
-								false
-							)
-						);
-				}
+        if (!user) {
+          return res
+            .status(400)
+            .json(
+              new ApiResponse(400, null, "Invalid refresh token", false, false)
+            );
+        }
+        if (incommingRefreshToken !== user?.refreshToken) {
+          return res
+            .status(401)
+            .json(
+              new ApiResponse(
+                401,
+                null,
+                "Refresh token is expired or used",
+                false,
+                false
+              )
+            );
+        }
 
-				const options = {
-					httpOnly: true,
-					secure: true,
-					sameSite: "None",
-				};
+        const options = {
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+        };
 
-				const newAccessToken = await generateAccessToken(user._id);
-				return res
-					.status(200)
-					.cookie("accessToken", newAccessToken, options)
-					.json(
-						new ApiResponse(
-							200,
-							{ newAccessToken: newAccessToken },
-							"Access token refreshed",
-							false,
-							false
-						)
-					);
-				//	next();
-			} catch (refreshErr) {
-				if (refreshErr.message === "jwt expired") {
-					return res
-						.status(400)
-						.clearCookie("accessToken", {
-							path: "/",
-							httpOnly: true,
-							secure: true,
-							sameSite: "None",
-						})
-						.clearCookie("refreshToken", {
-							path: "/",
-							httpOnly: true,
-							secure: true,
-							sameSite: "None",
-						})
-						.json(
-							new ApiResponse(
-								403,
-								null,
-								"Refresh token is expired",
-								false,
-								false
-							)
-						);
-				}
-				return res
-					.status(400)
-					.json(new ApiResponse(403, null, refreshErr.message, false, false));
-			}
-		}
-	}
+        const newAccessToken = await generateAccessToken(user._id);
+        return res
+          .status(200)
+          .cookie("accessToken", newAccessToken, options)
+          .json(
+            new ApiResponse(
+              200,
+              { newAccessToken: newAccessToken },
+              "Access token refreshed",
+              false,
+              false
+            )
+          );
+        //	next();
+      } catch (refreshErr) {
+        if (refreshErr.message === "jwt expired") {
+          return res
+            .status(400)
+            .clearCookie("accessToken", {
+              path: "/",
+              httpOnly: true,
+              secure: true,
+              sameSite: "None",
+            })
+            .clearCookie("refreshToken", {
+              path: "/",
+              httpOnly: true,
+              secure: true,
+              sameSite: "None",
+            })
+            .json(
+              new ApiResponse(
+                403,
+                null,
+                "Refresh token is expired",
+                false,
+                false
+              )
+            );
+        }
+        return res
+          .status(400)
+          .json(new ApiResponse(403, null, refreshErr.message, false, false));
+      }
+    }
+  }
 });
 
 module.exports = verifyJWT;

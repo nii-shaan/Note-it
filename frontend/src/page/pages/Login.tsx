@@ -42,7 +42,7 @@ function Login() {
           dispatch(login());
           navigate("/");
           toast.success("Login Success");
-        }else{
+        } else {
           toast.error(data.message)
         }
       },
@@ -126,7 +126,7 @@ function Login() {
             <div id="button" className="w-full flex justify-center">
               <Button
                 variant="outline"
-		colorScheme="cyan"
+                colorScheme="cyan"
                 type="submit"
                 className="text-text border p-2 m-5 hover:text-main "
               >
