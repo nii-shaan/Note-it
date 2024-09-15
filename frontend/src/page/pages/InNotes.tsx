@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useParams, useNavigate } from "react-router-dom"
 import { fetchEn } from "@/utils/user"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import type { NOTE } from "@/types"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -25,6 +25,9 @@ function InNotes() {
   const [note, setNote] = useState<NOTE | null>(null)
   const [editModeTitle, setEditModeTitle] = useState<boolean>(false)
   const [titleFieldValue, setTitleFieldValue] = useState<string>("")
+
+  const [editModeContent, setEditModeContent] = useState<boolean>(false)
+  console.log("Content edit mode: ", editModeContent)
   const [contentFieldValue, setContentFieldValue] = useState<string>("")
   console.log(contentFieldValue)
 
@@ -85,6 +88,51 @@ function InNotes() {
     fetchNote()
 
   }, [])
+
+
+  const handleUpdateContent = async () => {
+    if (editModeContent) {
+
+      try {
+
+
+
+        const response = await fetch("/api/notes/updateContent", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ title, newContent: contentFieldValue })
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          setContentFieldValue(result.data.content)
+          toast.success(`SUCCESS: ${result.message}`)
+        } else {
+          toast.error(`FAILED: ${result.message}`)
+        }
+
+      }
+      catch (e) {
+        toast.error("FAILED: Something went wrong")
+      }
+      setEditModeContent(false)
+    } else {
+      setEditModeContent(true)
+    }
+
+  }
+
+  //text editor config
+  const config = useMemo(
+    () => ({
+      readonly: !editModeContent, // all options from https://xdsoft.net/jodit/docs/,
+    }),
+    [editModeContent]
+  );
 
   if (!note) {
     return (
@@ -147,11 +195,17 @@ function InNotes() {
         <div id="textEditor" className="p-2 tablet:p-5 max-w-[1200px] mx-auto">
           <JoditEditor
             value={contentFieldValue}
+            config={config}
             onChange={(newContent) => {
-
               setContentFieldValue(newContent)
             }}
           />
+          <Button
+            onClick={handleUpdateContent}
+            variant="outline"
+            colorScheme="purple">
+            {editModeContent ? "Save Note" : "Edit Note"}
+          </Button>
 
 
 
