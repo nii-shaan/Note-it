@@ -56,7 +56,12 @@ function InNotes() {
 
       if (titleFieldValue.trim() === "") {
         setTitleErrorMsg("Title is empty!")
-        return null
+        return null;
+      }
+
+      if(!titleFieldValue.match(/^[a-zA-Z0-9_-]+$/)){
+       setTitleErrorMsg("'-', '_', Alphabets & Numbers only!")
+        return null;
       }
 
     
