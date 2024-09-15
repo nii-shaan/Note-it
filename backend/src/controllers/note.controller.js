@@ -118,6 +118,25 @@ const updateTitle = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedNote, `${oldTitle} updated to ${newTitle}`, true, true))
 })
 
+const updateContent = asyncHandler(async (req, res) => {
+
+  const { title, newContent } = req.body
+  const owner = req.user
+
+  const note = await Note.findOne({ title, owner })
+
+  if (!note) {
+    return res
+      .status(404)
+      .json(new ApiResponse(404, null, "Note not found", false, true))
+  }
+
+  const updatedNote = await Note.findByIdAndUpdate(note.id, { content: newContent }, { new: true })
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedNote, `${title} content updated`, true, true))
+})
 
 const deleteNote = asyncHandler(async (req, res) => {
 
@@ -141,5 +160,6 @@ module.exports = {
   getAllNotes,
   getNoteByTitle,
   updateTitle,
+  updateContent,
   deleteNote
 };
