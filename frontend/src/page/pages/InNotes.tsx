@@ -5,6 +5,15 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogClose,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { useParams, useNavigate } from "react-router-dom"
 import { fetchEn } from "@/utils/user"
 import { useEffect, useState, useMemo } from "react"
@@ -194,12 +203,40 @@ function InNotes() {
         <div id="textEditor" className="p-2 tablet:p-5 max-w-[1200px] mx-auto">
           <div className="flex tablet:justify-end pb-4">
 
+
+            <Dialog>
+
+
+              <DialogTrigger asChild>
+                <Button >Delete</Button>
+              </DialogTrigger>
+              <DialogContent className="bg-second text-text rounded-xl text-sm ">
+                <DialogHeader>
+                  <DialogTitle>Are you sure you want to delete this?</DialogTitle>
+                  <DialogDescription className="text-red-500">
+                    This is an irreversible action
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="flex items-center justify-evenly">
+                  <DialogClose asChild>
+                    <Button colorScheme="green" variant="outline">NO</Button>
+                  </DialogClose>
+                  <Button colorScheme="red" variant="outline" onClick={() => { }}>YES</Button>
+                </div>
+
+              </DialogContent>
+
+            </Dialog>
+
             <Button
               onClick={handleUpdateContent}
               variant="outline"
               colorScheme="purple">
               {editModeContent ? "Save Note" : "Edit Note"}
             </Button>
+
+
 
           </div>
           <JoditEditor
