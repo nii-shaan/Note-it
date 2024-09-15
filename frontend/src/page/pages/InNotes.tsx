@@ -18,14 +18,9 @@ import { useParams, useNavigate } from "react-router-dom"
 import { fetchEn } from "@/utils/user"
 import { useEffect, useState, useMemo } from "react"
 import type { NOTE } from "@/types"
-import { useForm, SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button } from "@chakra-ui/react"
 import JoditEditor from 'jodit-react';
-
-type Inputs = {
-  title: string
-}
 
 function InNotes() {
 
@@ -34,29 +29,39 @@ function InNotes() {
   const [note, setNote] = useState<NOTE | null>(null)
   const [editModeTitle, setEditModeTitle] = useState<boolean>(false)
   const [titleFieldValue, setTitleFieldValue] = useState<string>("")
+  const [titleErrorMsg, setTitleErrorMsg] = useState<string | null>(null)
 
   const [editModeContent, setEditModeContent] = useState<boolean>(false)
-  console.log("Content edit mode: ", editModeContent)
   const [contentFieldValue, setContentFieldValue] = useState<string>("")
-  console.log(contentFieldValue)
 
   const breadcStyle = "hover:cursor-pointer hover:text-third"
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    defaultValues: {
-      title
+
+  useEffect(() => {
+    const fetchNote = async () => {
+
+      const response = await fetchEn(`/api/notes/getNoteByTitle/${title}`)
+      setNote(response.data)
+      setTitleFieldValue(title || "")
+      setContentFieldValue(response.data.content)
     }
-  })
+    fetchNote()
 
-  const onSubmit: SubmitHandler<Inputs> = async (d) => {
+  }, [])
 
-    if (!editModeTitle) {
-      if (note?.title !== d.title) {
 
+  const handleUpdateTitle = async () => {
+
+    if (editModeTitle) {
+
+      if (titleFieldValue.trim() === "") {
+        setTitleErrorMsg("Title is empty!")
+        return null
+      }
+
+    
+
+      if (note?.title !== titleFieldValue) {
         try {
           const response = await fetch("/api/notes/updateNoteTitle", {
             method: "PUT",
@@ -64,7 +69,7 @@ function InNotes() {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ oldTitle: title, newTitle: d.title })
+            body: JSON.stringify({ oldTitle: title, newTitle: titleFieldValue })
           })
 
           const result = await response.json()
@@ -78,23 +83,11 @@ function InNotes() {
         } catch (e) {
           toast.error("Something went wrong!")
         }
-
+        setTitleErrorMsg(null)
       }
-
     }
+    setEditModeTitle((p) => !p)
   }
-
-  useEffect(() => {
-    const fetchNote = async () => {
-
-      const response = await fetchEn(`/api/notes/getNoteByTitle/${title}`)
-      setNote(response.data)
-      setTitleFieldValue(title || "")
-      setContentFieldValue(response.data.content)
-    }
-    fetchNote()
-
-  }, [])
 
 
   const handleUpdateContent = async () => {
@@ -194,23 +187,21 @@ function InNotes() {
 
         <div id="header" className="mt-5 w-full p-2">
 
-          <form onSubmit={handleSubmit(onSubmit)} className="flex items-center tablet:items-start flex-wrap gap-x-3 gap-y-4">
+          <div className="flex items-center tablet:items-start flex-wrap gap-x-3 gap-y-4">
             <div>
               <label htmlFor="title" className="text-text text-lg font-bold mr-2">Title </label >
-              <input id="title" value={titleFieldValue} disabled={!editModeTitle} {...register("title", {
-                required: "Title is required!",
-                pattern: {
-                  value: /^[a-zA-Z0-9_-]+$/,
-                  message: "'-', '_', Alphabets & Numbers only!"
-                }
-              })} className="bg-transparent border-2 text-text text-center outline-none rounded-lg  py-1 disabled:bg-second enabled:border-green-400 disabled:border-third"
+              <input id="title"
+                value={titleFieldValue}
+                disabled={!editModeTitle}
+                className="bg-transparent border-2 text-text text-center outline-none rounded-lg  py-1 disabled:bg-second enabled:border-green-400 disabled:border-third"
                 onChange={(e) => {
                   setTitleFieldValue(e.target.value)
                 }
-
                 }
               />
+              {titleErrorMsg && <div className="text-red-500 flex items-center justify-center">{titleErrorMsg}</div>}
             </div>
+
 
 
             <Button
@@ -218,43 +209,18 @@ function InNotes() {
               type="submit"
               variant={"outline"}
               colorScheme="purple"
-              onClick={() => {
-                setEditModeTitle((prev) => errors.title ? true : !prev)
-              }}
-            >
+              onClick={handleUpdateTitle}>
+
               {editModeTitle ? "Save Title" : "Edit Title"}
             </Button>
-            {errors.title && <div className="text-red-500 w-full mt-1 ">{errors.title.message}</div>}
-          </form>
+
+          </div>
         </div>
         <div id="textEditor" className="p-2 tablet:p-5 max-w-[1200px] mx-auto">
           <div className="flex tablet:justify-end pb-4">
 
 
-            <Dialog>
 
-
-              <DialogTrigger asChild>
-                <Button >Delete</Button>
-              </DialogTrigger>
-              <DialogContent className="bg-second text-text rounded-xl text-sm ">
-                <DialogHeader>
-                  <DialogTitle>Are you sure you want to delete this?</DialogTitle>
-                  <DialogDescription className="text-red-500">
-                    This is an irreversible action
-                  </DialogDescription>
-                </DialogHeader>
-
-                <div className="flex items-center justify-evenly">
-                  <DialogClose asChild>
-                    <Button colorScheme="green" variant="outline">NO</Button>
-                  </DialogClose>
-                  <Button colorScheme="red" variant="outline" onClick={handleDeleteNote}>YES</Button>
-                </div>
-
-              </DialogContent>
-
-            </Dialog>
 
             <Button
               onClick={handleUpdateContent}
@@ -273,6 +239,27 @@ function InNotes() {
               setContentFieldValue(newContent)
             }}
           />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" colorScheme="red"
+                className="mt-3">Delete Note</Button>
+            </DialogTrigger>
+            <DialogContent className="bg-second text-text rounded-xl text-sm ">
+              <DialogHeader>
+                <DialogTitle>Are you sure you want to delete this?</DialogTitle>
+                <DialogDescription className="text-red-500">
+                  This is an irreversible action
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="flex items-center justify-evenly">
+                <DialogClose asChild>
+                  <Button colorScheme="green" variant="outline">NO</Button>
+                </DialogClose>
+                <Button colorScheme="red" variant="outline" onClick={handleDeleteNote}>YES</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </>
