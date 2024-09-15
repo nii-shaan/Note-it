@@ -46,7 +46,7 @@ function InNotes() {
   const onSubmit: SubmitHandler<Inputs> = async (d) => {
 
     if (!editModeTitle) {
-      if (title === d.title) {
+      if (note?.title === d.title) {
         toast.error("FAILED! Updated title is same as old title!")
 
       } else {
@@ -65,6 +65,7 @@ function InNotes() {
           if (result.success) {
             toast.success(`SUCCESS: ${result.message}`)
             navigate(`/notes/${result.data.title}`)
+            setNote(result.data)
           } else {
             toast.error(`FAILED: ${result.message}`)
           }
@@ -93,33 +94,34 @@ function InNotes() {
   const handleUpdateContent = async () => {
     if (editModeContent) {
 
-      try {
+      if (note?.content === contentFieldValue) {
+        setEditModeContent(false)
+      } else {
+        try {
+          const response = await fetch("/api/notes/updateContent", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, newContent: contentFieldValue })
+          })
 
+          const result = await response.json()
 
-
-        const response = await fetch("/api/notes/updateContent", {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ title, newContent: contentFieldValue })
-        })
-
-        const result = await response.json()
-
-        if (result.success) {
-          setContentFieldValue(result.data.content)
-          toast.success(`SUCCESS: ${result.message}`)
-        } else {
-          toast.error(`FAILED: ${result.message}`)
+          if (result.success) {
+            setEditModeContent(false)
+            setContentFieldValue(result.data.content)
+            toast.success(`SUCCESS: ${result.message}`)
+            setNote(result.data)
+          } else {
+            toast.error(`FAILED: ${result.message}`)
+          }
         }
-
+        catch (e) {
+          toast.error("FAILED: Something went wrong")
+        }
       }
-      catch (e) {
-        toast.error("FAILED: Something went wrong")
-      }
-      setEditModeContent(false)
     } else {
       setEditModeContent(true)
     }
