@@ -59,12 +59,12 @@ function InNotes() {
         return null;
       }
 
-      if(!titleFieldValue.match(/^[a-zA-Z0-9_-]+$/)){
-       setTitleErrorMsg("'-', '_', Alphabets & Numbers only!")
+      if (!titleFieldValue.match(/^[a-zA-Z0-9_-]+$/)) {
+        setTitleErrorMsg("'-', '_', Alphabets & Numbers only!")
         return null;
       }
 
-    
+
 
       if (note?.title !== titleFieldValue) {
         try {
@@ -80,7 +80,7 @@ function InNotes() {
           const result = await response.json()
           if (result.success) {
             toast.success(`SUCCESS: ${result.message}`)
-            navigate(`/notes/${result.data.title}`)
+            navigate(`/notes/${result.data.title}`, { replace: true })
             setNote(result.data)
           } else {
             toast.error(`FAILED: ${result.message}`)
