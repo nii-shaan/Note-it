@@ -46,10 +46,7 @@ function InNotes() {
   const onSubmit: SubmitHandler<Inputs> = async (d) => {
 
     if (!editModeTitle) {
-      if (note?.title === d.title) {
-        toast.error("FAILED! Updated title is same as old title!")
-
-      } else {
+      if (note?.title !== d.title) {
 
         try {
           const response = await fetch("/api/notes/updateNoteTitle", {
@@ -181,7 +178,7 @@ function InNotes() {
 
 
             <Button
-              className="ml-14 tablet:ml-0"
+              className=""
               type="submit"
               variant={"outline"}
               colorScheme="purple"
@@ -195,6 +192,16 @@ function InNotes() {
           </form>
         </div>
         <div id="textEditor" className="p-2 tablet:p-5 max-w-[1200px] mx-auto">
+          <div className="flex tablet:justify-end pb-4">
+
+            <Button
+              onClick={handleUpdateContent}
+              variant="outline"
+              colorScheme="purple">
+              {editModeContent ? "Save Note" : "Edit Note"}
+            </Button>
+
+          </div>
           <JoditEditor
             value={contentFieldValue}
             config={config}
@@ -202,20 +209,6 @@ function InNotes() {
               setContentFieldValue(newContent)
             }}
           />
-          <Button
-            onClick={handleUpdateContent}
-            variant="outline"
-            colorScheme="purple">
-            {editModeContent ? "Save Note" : "Edit Note"}
-          </Button>
-
-
-
-
-
-
-
-
         </div>
       </div>
     </>
