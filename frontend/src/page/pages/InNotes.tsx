@@ -12,6 +12,7 @@ import type { NOTE } from "@/types"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button } from "@chakra-ui/react"
+import JoditEditor from 'jodit-react';
 
 type Inputs = {
   title: string
@@ -23,8 +24,9 @@ function InNotes() {
   const navigate = useNavigate()
   const [note, setNote] = useState<NOTE | null>(null)
   const [editModeTitle, setEditModeTitle] = useState<boolean>(false)
-  console.log(note)
   const [titleFieldValue, setTitleFieldValue] = useState<string>("")
+  const [contentFieldValue, setContentFieldValue] = useState<string>("")
+  console.log(contentFieldValue)
 
   const breadcStyle = "hover:cursor-pointer hover:text-third"
 
@@ -41,13 +43,12 @@ function InNotes() {
   const onSubmit: SubmitHandler<Inputs> = async (d) => {
 
     if (!editModeTitle) {
-      if (title == d.title) {
+      if (title === d.title) {
         toast.error("FAILED! Updated title is same as old title!")
 
       } else {
+
         try {
-
-
           const response = await fetch("/api/notes/updateNoteTitle", {
             method: "PUT",
             credentials: "include",
@@ -78,9 +79,11 @@ function InNotes() {
 
       const response = await fetchEn(`/api/notes/getNoteByTitle/${title}`)
       setNote(response.data)
+      setTitleFieldValue(title || "")
+      setContentFieldValue(response.data.content)
     }
     fetchNote()
-    setTitleFieldValue(title || "")
+
   }, [])
 
   if (!note) {
@@ -110,25 +113,25 @@ function InNotes() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex items-center tablet:items-start flex-wrap gap-x-3 gap-y-4">
             <div>
-            <label htmlFor="title" className="text-text text-lg font-bold mr-2">Title </label >
-            <input id="title" value={titleFieldValue} disabled={!editModeTitle} {...register("title", {
-              required: "Title is required!",
-              pattern: {
-                value: /^[a-zA-Z0-9_-]+$/,
-                message: "'-', '_', Alphabets & Numbers only!"
-              }
-            })} className="bg-transparent border-2 text-text text-center outline-none rounded-lg  py-1 disabled:bg-second enabled:border-green-400 disabled:border-third"
-              onChange={(e) => {
-                setTitleFieldValue(e.target.value)
-              }
+              <label htmlFor="title" className="text-text text-lg font-bold mr-2">Title </label >
+              <input id="title" value={titleFieldValue} disabled={!editModeTitle} {...register("title", {
+                required: "Title is required!",
+                pattern: {
+                  value: /^[a-zA-Z0-9_-]+$/,
+                  message: "'-', '_', Alphabets & Numbers only!"
+                }
+              })} className="bg-transparent border-2 text-text text-center outline-none rounded-lg  py-1 disabled:bg-second enabled:border-green-400 disabled:border-third"
+                onChange={(e) => {
+                  setTitleFieldValue(e.target.value)
+                }
 
-              }
-            />
+                }
+              />
             </div>
 
 
             <Button
-            className="ml-14 tablet:ml-0"
+              className="ml-14 tablet:ml-0"
               type="submit"
               variant={"outline"}
               colorScheme="purple"
@@ -140,6 +143,23 @@ function InNotes() {
             </Button>
             {errors.title && <div className="text-red-500 w-full mt-1 ">{errors.title.message}</div>}
           </form>
+        </div>
+        <div id="textEditor" className="p-2 tablet:p-5 max-w-[1200px] mx-auto">
+          <JoditEditor
+            value={contentFieldValue}
+            onChange={(newContent) => {
+
+              setContentFieldValue(newContent)
+            }}
+          />
+
+
+
+
+
+
+
+
         </div>
       </div>
     </>

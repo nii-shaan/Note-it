@@ -26,7 +26,7 @@ const postNote = asyncHandler(async (req, res) => {
   }
   const note = await Note.create({
     title,
-    content: content || "",
+    content: content || "<p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>",
     owner
 
   })
