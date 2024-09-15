@@ -108,9 +108,9 @@ function InNotes() {
 
         <div id="header" className="mt-5 w-full p-2">
 
-          <form onSubmit={handleSubmit(onSubmit)} className="flex items-center flex-wrap gap-x-3 gap-y-4">
-
-            <label htmlFor="title" className="text-text text-lg font-bold">Title </label >
+          <form onSubmit={handleSubmit(onSubmit)} className="flex items-center tablet:items-start flex-wrap gap-x-3 gap-y-4">
+            <div>
+            <label htmlFor="title" className="text-text text-lg font-bold mr-2">Title </label >
             <input id="title" value={titleFieldValue} disabled={!editModeTitle} {...register("title", {
               required: "Title is required!",
               pattern: {
@@ -124,10 +124,11 @@ function InNotes() {
 
               }
             />
+            </div>
 
-            {errors.title && <div className="text-red-500 w-full tablet:w-auto tablet:inline-block mt-1 mx-auto">{errors.title.message}</div>}
 
             <Button
+            className="ml-14 tablet:ml-0"
               type="submit"
               variant={"outline"}
               colorScheme="purple"
@@ -137,6 +138,7 @@ function InNotes() {
             >
               {editModeTitle ? "Save Title" : "Edit Title"}
             </Button>
+            {errors.title && <div className="text-red-500 w-full mt-1 ">{errors.title.message}</div>}
           </form>
         </div>
       </div>
