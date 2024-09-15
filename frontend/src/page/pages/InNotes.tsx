@@ -134,6 +134,33 @@ function InNotes() {
 
   }
 
+  const handleDeleteNote = async () => {
+
+    try {
+
+      const response = await fetch(`/api/notes/deleteNote/${note?.title}`, {
+        method: "DELETE",
+        credentials: "include",
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        toast.success(`SUCCESS: ${result.message} `)
+        navigate("/notes")
+      } else {
+        toast.error(`FAILED: ${result.message}`)
+      }
+
+    } catch (error) {
+
+      toast.error("Something went wrong")
+
+    }
+
+
+  }
+
   //text editor config
   const config = useMemo(
     () => ({
@@ -222,7 +249,7 @@ function InNotes() {
                   <DialogClose asChild>
                     <Button colorScheme="green" variant="outline">NO</Button>
                   </DialogClose>
-                  <Button colorScheme="red" variant="outline" onClick={() => { }}>YES</Button>
+                  <Button colorScheme="red" variant="outline" onClick={handleDeleteNote}>YES</Button>
                 </div>
 
               </DialogContent>
