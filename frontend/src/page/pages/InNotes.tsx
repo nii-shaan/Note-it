@@ -162,7 +162,8 @@ function InNotes() {
   //text editor config
   const config = useMemo(
     () => ({
-      readonly: !editModeContent, // all options from https://xdsoft.net/jodit/docs/,
+      readonly: !editModeContent,
+      className:"text-black"// all options from https://xdsoft.net/jodit/docs/,
     }),
     [editModeContent]
   );
