@@ -174,7 +174,7 @@ function InNotes() {
   }
   return (
 
-    <div className="min-h-[500px] tablet:min-h-[800px]">
+    <div className="min-h-[800px]">
       <div id="breadc" className="flex justify-center items-center my-2">
         <Breadcrumb>
           <BreadcrumbList className="text-text hover:text-white">
@@ -224,14 +224,11 @@ function InNotes() {
         <div id="textEditor" className="p-2 tablet:p-5 max-w-[1300px] mx-auto">
           <div className="flex tablet:justify-end pb-4">
 
-
-
-
             <Button
               onClick={handleUpdateContent}
               variant="outline"
-              colorScheme="purple">
-              {editModeContent ? "Save Note" : "Edit Note"}
+              colorScheme={editModeContent ? "green" : "purple"}>
+              {editModeContent ? "Save Note" : "Enter Note editing mode"}
             </Button>
 
 
