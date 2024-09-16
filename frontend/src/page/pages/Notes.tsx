@@ -19,7 +19,7 @@ function Notes() {
   })
 
   return (
-    <>
+    <div className="min-h-[500px] tablet:min-h-[800px]">
       <AddNote />
       {isLoading ? (
         <div>Loading...</div>
@@ -32,7 +32,7 @@ function Notes() {
           ))}
         </div>
       )}
-    </>
+    </div>
   )
 
 

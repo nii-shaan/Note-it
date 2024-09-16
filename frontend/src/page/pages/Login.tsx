@@ -50,7 +50,7 @@ function Login() {
     reset({ email: "", password: "" });
   };
   return (
-    <>
+    <div className="min-h-[500px] tablet:min-h-[800px]">
       <form
         action=""
         className=" mt-10 h-[350px]  mx-auto max-w-[400px] flex justify-center"
@@ -136,7 +136,7 @@ function Login() {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

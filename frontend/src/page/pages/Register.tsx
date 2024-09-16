@@ -75,17 +75,14 @@ function Register() {
     setConfirmPasswordShown((prev) => !prev);
   };
   return (
-    <>
+    <div className="min-h-[500px] tablet:min-h-[800px]">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-10 h-[550px]  mx-auto max-w-[400px] flex justify-center"
       >
         <div className="h-full w-[95%] bg-second text-text flex flex-col  rounded-xl  ">
           <div id="heading" className="flex-col w-full py-2 border-b">
-            <div className="flex justify-center text-4xl">
-              <FaRegUserCircle />
-            </div>
-            <div className=" flex justify-center text-4xl  ">Register </div>
+            <div className=" flex justify-center text-4xl  ">Register  <FaRegUserCircle className="ml-2 mt-1 text-4xl inline-block" /> </div>
           </div>
           <div id="fields" className="mx-auto">
             <div id="inputField" className="flex flex-col mt-6">
@@ -227,7 +224,7 @@ function Register() {
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
