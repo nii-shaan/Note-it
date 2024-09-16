@@ -19,7 +19,7 @@ import { fetchEn } from "@/utils/user"
 import { useEffect, useState, useMemo } from "react"
 import type { NOTE } from "@/types"
 import { toast } from "react-toastify"
-import { Button } from "@chakra-ui/react"
+import { Button } from "@/components/ui/button"
 import JoditEditor from 'jodit-react';
 
 function InNotes() {
@@ -207,13 +207,10 @@ function InNotes() {
               {titleErrorMsg && <div className="text-red-500 flex items-center justify-center">{titleErrorMsg}</div>}
             </div>
 
-
-
             <Button
-              className=""
+              className={`bg-transparent ${editModeTitle ? "border-green-500" : "border-third"}`}
               type="submit"
               variant={"outline"}
-              colorScheme="purple"
               onClick={handleUpdateTitle}>
 
               {editModeTitle ? "Save Title" : "Edit Title"}
@@ -227,7 +224,7 @@ function InNotes() {
             <Button
               onClick={handleUpdateContent}
               variant="outline"
-              colorScheme={editModeContent ? "green" : "purple"}>
+              className={`bg-transparent ${editModeContent ? "border-green-500" : "border-third"}`}>
               {editModeContent ? "Save Note" : "Enter Note editing mode"}
             </Button>
 
@@ -243,8 +240,8 @@ function InNotes() {
           />
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" colorScheme="red"
-                className="mt-3">Delete Note</Button>
+              <Button variant="outline"
+                className="mt-3 bg-transparent border-red-500 text-red-500">Delete Note</Button>
             </DialogTrigger>
             <DialogContent className="bg-second text-text rounded-xl text-sm ">
               <DialogHeader>
@@ -256,9 +253,9 @@ function InNotes() {
 
               <div className="flex items-center justify-evenly">
                 <DialogClose asChild>
-                  <Button colorScheme="green" variant="outline">NO</Button>
+                  <Button variant="outline" className="border-green-500 bg-transparent">NO</Button>
                 </DialogClose>
-                <Button colorScheme="red" variant="outline" onClick={handleDeleteNote}>YES</Button>
+                <Button className="border-red-500 bg-transparent" variant="outline" onClick={handleDeleteNote}>YES</Button>
               </div>
             </DialogContent>
           </Dialog>
