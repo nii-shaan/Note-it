@@ -37,7 +37,7 @@ function Login() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     mutate(data, {
       onSuccess: (data) => {
-        console.log(data);
+        
         if (data.isAuthenticated) {
           dispatch(login());
           navigate("/");

@@ -29,7 +29,7 @@ function AddNote() {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = (d) => {
-    console.log(d)
+
     mutate(d)
     setOpen(false)
     reset()

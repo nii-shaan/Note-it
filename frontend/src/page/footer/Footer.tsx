@@ -1,7 +1,7 @@
 
 function Footer() {
   return (
-    <div>Footer</div>
+    <div className="h-[200px] w-full bg-second">Footer</div>
   )
 }
 

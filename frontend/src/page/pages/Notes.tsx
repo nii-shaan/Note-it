@@ -9,7 +9,7 @@ import type { NOTE } from "@/types";
 function Notes() {
   const fetchNotes = async () => {
     const result = await fetchEn("/api/notes/getAllNotes")
-    console.log(result)
+
     return result.data
   }
 
