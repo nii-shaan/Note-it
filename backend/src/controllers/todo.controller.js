@@ -25,6 +25,25 @@ const createTodo = asyncHandler(async (req, res) => {
 
 const deleteTodo = asyncHandler(async (req, res) => {
 
+  const { id } = req.params
+
+  if (!id) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "id not provided", false, true))
+  }
+
+  const todo = await Todo.findByIdAndDelete(id)
+
+  if (!todo) {
+    return res
+      .status(200)
+      .json(new ApiResponse(200, null, "todo not found", false, true))
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, todo, `${todo.title} deleted`, true, true))
 
 })
 

@@ -6,7 +6,7 @@ const { createTodo, deleteTodo, getAllTodos } = require("../controllers/todo.con
 router.use(verifyJWT);
 
 router.post("/createTodo", createTodo);
-router.delete("/deleteTodo/:title", deleteTodo)
+router.delete("/deleteTodo/:id", deleteTodo)
 router.get("/getAllTodos", getAllTodos)
 
 module.exports = router;
