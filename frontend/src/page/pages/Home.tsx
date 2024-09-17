@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/hooks/reduxHooks";
-import { USER } from "@/types";
+import { USER, TODO } from "@/types";
 import { fetchEn, capitalize } from "@/utils/user";
 import { useEffect, useState } from "react";
 import { Typewriter } from 'react-simple-typewriter'
@@ -15,9 +15,11 @@ import {
 } from "@/components/ui/dialog"
 import { IoAdd } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form"
+import { useQuery } from "@tanstack/react-query";
 type Inputs = {
   title: string
 }
+import TodoBlock from "@/components/self/TodoBlock";
 
 
 
@@ -29,6 +31,8 @@ function Home() {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const [user, setUser] = useState<USER | null>(null)
   const username = user?.username ? capitalize(user.username) : 'Guest';
+
+
 
   const {
     register,
@@ -43,6 +47,14 @@ function Home() {
     reset()
 
   }
+
+  const { data, isPending, isSuccess } = useQuery({
+    queryKey: ['todos'], queryFn: function() {
+      return fetchEn("/api/todos/getAllTodos")
+    }
+  })
+  console.log(data)
+
 
 
   useEffect(() => {
@@ -82,7 +94,7 @@ function Home() {
               <DialogContent className="bg-second text-text rounded-xl text-sm">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <DialogHeader>
-                    <DialogTitle>Create new Note</DialogTitle>
+                    <DialogTitle>Create new Remainder</DialogTitle>
                     <DialogDescription />
                   </DialogHeader>
 
@@ -94,7 +106,7 @@ function Home() {
 
                       <input id="title" {...register("title", {
                         required: "Remainder is required !",
-                      })} className="bg-transparent border-2 text-center outline-none rounded-lg py-1 focus:border-green-300" />
+                      })} className="bg-transparent border-2 text-center outline-none rounded-lg py-1 focus:border-green-500" />
                       {errors.title && <span className="text-red-500 mt-1 mx-auto">{errors.title.message}</span>}
                     </div>
                   </div>
@@ -102,9 +114,9 @@ function Home() {
                     <DialogClose asChild>
                       <Button
                         variant="outline"
-                        className="bg-transparent border-third" onClick={() => { reset() }}>Cancel</Button>
+                        className="bg-transparent border-red-500" onClick={() => { reset() }}>Cancel</Button>
                     </DialogClose>
-                    <Button variant="outline" className="bg-transparent border-third" type="submit">Create</Button>
+                    <Button variant="outline" className="bg-transparent border-green-500" type="submit">Create</Button>
                   </div>
 
                 </form>
@@ -114,8 +126,12 @@ function Home() {
 
           </div>
 
-          <div id="todos">
-
+          <div id="todos" className="bg-red-300 flex items-center justify-center">
+            <div className="bg-green-200">
+              {!isPending ? (data.data.map((todo: TODO) => (
+                <TodoBlock key={todo._id} todo={todo} />
+              ))) : (<div>Loading</div>)}
+            </div>
           </div>
 
 
