@@ -25,3 +25,6 @@ app.use("/api/user", userRouter);
 
 const notesRouter = require("./routes/notes.route.js");
 app.use("/api/notes", notesRouter);
+
+const todosRouter = require("./routes/todo.route.js");
+app.use("/api/todos",todosRouter)
