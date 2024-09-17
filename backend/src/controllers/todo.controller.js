@@ -49,9 +49,13 @@ const deleteTodo = asyncHandler(async (req, res) => {
 
 const getAllTodos = asyncHandler(async (req, res) => {
 
+  const owner = req.user
+
+  const todos = await Todo.find({ owner })
+
   return res
     .status(200)
-    .json(new ApiResponse(200, null, "yes done", true, true))
+    .json(new ApiResponse(200, todos, `${owner.username}'s all todos fetched`, true, true))
 
 })
 
