@@ -3,6 +3,7 @@ import { USER } from "@/types";
 import { fetchEn, capitalize } from "@/utils/user";
 import { useEffect, useState } from "react";
 import { Typewriter } from 'react-simple-typewriter'
+import { Button } from "@/components/ui/button";
 
 
 
@@ -39,7 +40,17 @@ function Home() {
         <div id="typewriter" className="w-full h-[100px] flex justify-center items-center text-4xl">
           <Typewriter words={[`Welcome ${username}`]} typeSpeed={100} />
         </div>
-        <div id="todos">
+        <div id="todoArea">
+
+          <div id="addRemainderButton" className="w-full flex justify-center">
+            <Button variant="outline" className="bg-transparent border-third">
+              Add new remainder
+            </Button>
+          </div>
+
+          <div id="todos">
+
+          </div>
 
 
         </div>
