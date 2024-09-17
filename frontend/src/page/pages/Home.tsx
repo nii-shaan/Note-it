@@ -79,7 +79,7 @@ function Home() {
         <div id="typewriter" className="w-full h-[100px] flex justify-center items-center text-4xl">
           <Typewriter words={[`Welcome ${username}`]} typeSpeed={100} />
         </div>
-        <div id="todoArea">
+        <div id="todoArea" className="mt-6">
           <div id="addRemainderButton" className="w-full flex justify-center">
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
@@ -126,11 +126,17 @@ function Home() {
 
           </div>
 
-          <div id="todos" className="flex items-center justify-center">
+          <div id="todos" className="flex items-center justify-center mt-5">
             <div className="bg-second p-4 rounded-lg">
-              {!isPending && isSuccess ? (todos.data.map((todo: TODO) => (
-                <TodoBlock key={todo._id} todo={todo} />
-              ))) : (<div>Loading</div>)}
+              {!isPending && isSuccess ?
+                todos.data.length <= 0 ? (
+                  <div className="text-green-500">No Remainders</div>
+                ) : (
+                  todos.data.map((todo: TODO) => (
+                    <TodoBlock key={todo._id} todo={todo} />
+                  ))) : (
+                  <div>Loading..</div>
+                )}
             </div>
           </div>
 
