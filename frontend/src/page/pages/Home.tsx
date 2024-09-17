@@ -20,6 +20,8 @@ type Inputs = {
   title: string
 }
 import TodoBlock from "@/components/self/TodoBlock";
+import { FiLogIn } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -27,6 +29,7 @@ import TodoBlock from "@/components/self/TodoBlock";
 
 
 function Home() {
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(false);
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
@@ -143,7 +146,7 @@ function Home() {
 
           <div id="todos" className="flex items-center justify-center my-5">
             <div className="bg-second p-4 rounded-lg">
-              {!isPending && isSuccess ?
+              {!isPending && isSuccess && todos.data?
                 todos.data.length <= 0 ? (
                   <div className="text-green-500">No Remainders</div>
                 ) : (
@@ -163,7 +166,56 @@ function Home() {
     </>)
   }
 
-  return <div className="min-h-[800px] bg-main">Home</div>;
-}
+  return (
+    <div className="min-h-[800px] bg-main">
+      <div id="head" className="red-100 text-xl mt-16">
+        <div className="w-[300px] tablet:w-[600px] mx-auto flex flex-col 
+        items-center justify-center  tablet:flex-row tablet:justify-normal 
+        pc:w-[1025px] pc:text-4xl">
+          <p className="inline-block">Welcome to NoteIt</p>
+          <div className="font-bold inline-block ml-4">
+            <Typewriter words={["--Your Personal Note & Task Manager"]} typeSpeed={100} cursor />
+          </div>
+        </div>
+        <div id="button" className="w-full flex justify-center mt-8">
+          <div className="relative group">
+            <div
+              className="relative w-64 h-14 opacity-90 overflow-hidden rounded-xl bg-black z-10"
+            >
+              <div
+                className="absolute z-10 -translate-x-44 group-hover:translate-x-[30rem]
+                ease-in transistion-all duration-700 h-full 
+                w-44 bg-gradient-to-r from-gray-500 to-white/10 opacity-30 -skew-x-12"
+              ></div>
+
+              <div
+                className="absolute flex items-center justify-center text-white 
+                z-[1] opacity-90 rounded-2xl inset-0.5 bg-black"
+              >
+                <button
+                  name="text"
+                  className="input font-semibold text-lg h-full opacity-90 w-full  rounded-xl bg-black flex justify-center items-center"
+                  onClick={() => { navigate("/register") }}
+                >
+                  Get Started
+                  <FiLogIn className="inline-block text-4xl ml-1" />
+
+                </button>
+              </div>
+              <div
+                className="absolute duration-1000 group-hover:animate-spin
+                w-full h-[100px] bg-gradient-to-r from-third to-third blur-[30px]"
+              ></div>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+  )
+};
 
 export default Home;

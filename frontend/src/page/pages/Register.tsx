@@ -78,7 +78,7 @@ function Register() {
     <div className="min-h-[500px] tablet:min-h-[800px]">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-10 h-[550px]  mx-auto max-w-[400px] flex justify-center"
+        className="mt-10 h-[550px]  mx-auto max-w-[400px] flex justify-center mb-10"
       >
         <div className="h-full w-[95%] bg-second text-text flex flex-col  rounded-xl  ">
           <div id="heading" className="flex-col w-full py-2 border-b">
