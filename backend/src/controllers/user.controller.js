@@ -124,10 +124,16 @@ const verifyUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, null, "User verified success", true, true));
 });
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+  res.status(200)
+    .json(new ApiResponse(200, req.user, "user fetched", true, true))
+})
+
 module.exports = {
   registerUser,
   loginUser,
   logout,
   generateAccessToken,
   verifyUser,
+  getCurrentUser
 };
