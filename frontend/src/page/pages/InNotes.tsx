@@ -51,20 +51,21 @@ function InNotes() {
 
 
   const handleUpdateTitle = async () => {
+    setEditModeTitle((p) => !p)
 
     if (editModeTitle) {
 
       if (titleFieldValue.trim() === "") {
         setTitleErrorMsg("Title is empty!")
+        setEditModeTitle(true)
         return null;
       }
 
       if (!titleFieldValue.match(/^[a-zA-Z0-9_-]+$/)) {
         setTitleErrorMsg("'-', '_', Alphabets & Numbers only!")
+        setEditModeTitle(true)
         return null;
       }
-
-
 
       if (note?.title !== titleFieldValue) {
         try {
@@ -84,14 +85,15 @@ function InNotes() {
             setNote(result.data)
           } else {
             toast.error(`FAILED: ${result.message}`)
+            setEditModeTitle(true)
           }
         } catch (e) {
           toast.error("Something went wrong!")
+          setEditModeTitle(true)
         }
         setTitleErrorMsg(null)
       }
     }
-    setEditModeTitle((p) => !p)
   }
 
 
@@ -163,7 +165,7 @@ function InNotes() {
   const config = useMemo(
     () => ({
       readonly: !editModeContent,
-      className:"text-black"// all options from https://xdsoft.net/jodit/docs/,
+      className: "text-black"// all options from https://xdsoft.net/jodit/docs/,
     }),
     [editModeContent]
   );
