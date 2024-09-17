@@ -48,12 +48,12 @@ function Home() {
 
   }
 
-  const { data, isPending, isSuccess } = useQuery({
+  const { data: todos, isPending, isSuccess } = useQuery({
     queryKey: ['todos'], queryFn: function() {
       return fetchEn("/api/todos/getAllTodos")
     }
   })
-  console.log(data)
+  console.log(todos)
 
 
 
@@ -126,9 +126,9 @@ function Home() {
 
           </div>
 
-          <div id="todos" className="bg-red-300 flex items-center justify-center">
-            <div className="bg-green-200">
-              {!isPending ? (data.data.map((todo: TODO) => (
+          <div id="todos" className="flex items-center justify-center">
+            <div className="bg-second p-4 rounded-lg">
+              {!isPending && isSuccess ? (todos.data.map((todo: TODO) => (
                 <TodoBlock key={todo._id} todo={todo} />
               ))) : (<div>Loading</div>)}
             </div>
