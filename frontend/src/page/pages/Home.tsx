@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { IoAdd } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 type Inputs = {
   title: string
 }
@@ -27,12 +27,11 @@ import TodoBlock from "@/components/self/TodoBlock";
 
 
 function Home() {
+
   const [open, setOpen] = useState(false);
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const [user, setUser] = useState<USER | null>(null)
   const username = user?.username ? capitalize(user.username) : 'Guest';
-
-
 
   const {
     register,
@@ -41,8 +40,40 @@ function Home() {
     formState: { errors },
   } = useForm<Inputs>()
 
-  const onSubmit: SubmitHandler<Inputs> = (d) => {
+  useEffect(() => {
+    const setCurrentUser = async () => {
+      const result = await fetchEn("/api/user/getCurrentUser")
+      if (result.success) {
+        setUser(result.data)
+      }
+    }
+    if (isLoggedIn) {
+      setCurrentUser()
+    }
+  }, [isLoggedIn])
 
+
+  const queryClient = useQueryClient()
+  const { mutate, isPending: mutatePending } = useMutation({
+    mutationFn: (payload: { title: string }) => {
+      return fetch("/api/todos/createTodo", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload)
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] })
+    }
+  })
+
+
+  const onSubmit: SubmitHandler<Inputs> = (d) => {
+    mutate(d)
+    console.log(d)
     setOpen(false)
     reset()
 
@@ -55,21 +86,6 @@ function Home() {
   })
   console.log(todos)
 
-
-
-  useEffect(() => {
-    const setCurrentUser = async () => {
-      const result = await fetchEn("/api/user/getCurrentUser")
-      if (result.success) {
-        setUser(result.data)
-
-      }
-    }
-
-    if (isLoggedIn) {
-      setCurrentUser()
-    }
-  }, [isLoggedIn])
 
 
   if (isLoggedIn) {
@@ -87,7 +103,8 @@ function Home() {
                   <Button
                     variant="outline"
                     className="bg-transparent border-third">
-                    Create new remainder <IoAdd className="inline-block text-3xl ml-2" />
+                    {mutatePending ? "Adding new remainder" : (<>
+                      Create new remainder <IoAdd className="inline-block text-3xl ml-2" /></>)}
                   </Button>
                 </div>
               </DialogTrigger>
@@ -126,7 +143,7 @@ function Home() {
 
           </div>
 
-          <div id="todos" className="flex items-center justify-center mt-5">
+          <div id="todos" className="flex items-center justify-center my-5">
             <div className="bg-second p-4 rounded-lg">
               {!isPending && isSuccess ?
                 todos.data.length <= 0 ? (

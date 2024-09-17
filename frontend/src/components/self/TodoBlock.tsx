@@ -5,7 +5,7 @@ import { MdOutlineInfo, MdDeleteForever } from "react-icons/md";
 
 function TodoBlock({ todo }: { todo: TODO }) {
   return (
-    <div className="min-w-[280px] py-1 px-2 border border-green-500 rounded-lg flex items-center justify-between">
+    <div className="min-w-[280px] py-1 px-2 border border-green-500 rounded-lg flex items-center justify-between my-2">
       <div>
         <MdOutlineInfo className="text-2xl text-yellow-400" />
       </div>
