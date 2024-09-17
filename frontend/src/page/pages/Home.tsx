@@ -73,7 +73,6 @@ function Home() {
 
   const onSubmit: SubmitHandler<Inputs> = (d) => {
     mutate(d)
-    console.log(d)
     setOpen(false)
     reset()
 
@@ -84,7 +83,6 @@ function Home() {
       return fetchEn("/api/todos/getAllTodos")
     }
   })
-  console.log(todos)
 
 
 
