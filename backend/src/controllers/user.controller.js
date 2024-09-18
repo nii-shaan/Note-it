@@ -42,6 +42,14 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(300, "Password is missing");
   }
 
+  const userAlreadyExists = await User.findOne({ email })
+
+  if (userAlreadyExists) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "user with that email already exist", false, true))
+  }
+
   const user = await User.create({
     username,
     email,
