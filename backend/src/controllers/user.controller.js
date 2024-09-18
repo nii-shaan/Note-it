@@ -158,6 +158,21 @@ const updateUsername = asyncHandler(async (req, res) => {
 
 const updateEmail = asyncHandler(async (req, res) => {
 
+  const { newEmail } = req.body
+  const currUser = req.user
+
+  if (!newEmail) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "new email not provided", false, true))
+  }
+
+  const user = await User.findByIdAndUpdate(currUser._id, { email: newEmail })
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "email updated", true, true))
+
 
 })
 
@@ -175,5 +190,6 @@ module.exports = {
   generateAccessToken,
   verifyUser,
   getCurrentUser,
-  updateUsername
+  updateUsername,
+  updateEmail
 };

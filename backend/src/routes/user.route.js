@@ -6,7 +6,8 @@ const {
   logout,
   verifyUser,
   getCurrentUser,
-  updateUsername
+  updateUsername,
+  updateEmail
 
 } = require("../controllers/user.controller.js");
 const verifyJWT = require("../middlewares/auth.middleware.js");
@@ -17,5 +18,6 @@ router.get("/logout", logout);
 router.get("/verifyUser", verifyJWT, verifyUser);
 router.get("/getCurrentUser", verifyJWT, getCurrentUser)
 router.put("/updateUsername", verifyJWT, updateUsername)
+router.put("/updateEmail", verifyJWT, updateEmail)
 
 module.exports = router;
