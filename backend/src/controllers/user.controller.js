@@ -127,15 +127,46 @@ const logout = asyncHandler((req, res) => {
 });
 
 const verifyUser = asyncHandler(async (req, res) => {
-  res
+  return res
     .status(200)
     .json(new ApiResponse(200, null, "User verified success", true, true));
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  res.status(200)
+  return res.status(200)
     .json(new ApiResponse(200, req.user, "user fetched", true, true))
 })
+
+const updateUsername = asyncHandler(async (req, res) => {
+
+  const { newUsername } = req.body
+  const currUser = req.user
+
+  if (!newUsername) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "new username not provided", false, true))
+  }
+
+  const user = await User.findOneAndUpdate({ email: currUser.email }, { username: newUsername })
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "username updated", true, true))
+
+})
+
+const updateEmail = asyncHandler(async (req, res) => {
+
+
+})
+
+const updatePassword = asyncHandler(async (req, res) => {
+
+
+})
+
+
 
 module.exports = {
   registerUser,
@@ -143,5 +174,6 @@ module.exports = {
   logout,
   generateAccessToken,
   verifyUser,
-  getCurrentUser
+  getCurrentUser,
+  updateUsername
 };
