@@ -178,6 +178,32 @@ const updateEmail = asyncHandler(async (req, res) => {
 
 const updatePassword = asyncHandler(async (req, res) => {
 
+  const { oldPassword, newPassword } = req.body
+  const currUser = req.user
+
+
+  if (!oldPassword || !newPassword) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "both old and new password required", false, true))
+  }
+  const currentUser = await User.findOne({ email: currUser.email })
+  const doesPasswordMatches = await bcrypt.compare(oldPassword, currentUser.password)
+
+  if (!doesPasswordMatches) {
+
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "old password didnt matched", false, true))
+  }
+
+  await User.findByIdAndUpdate(currentUser._id, { password: newPassword })
+
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, currUser, "password updated", true, true))
+
 
 })
 
@@ -191,5 +217,6 @@ module.exports = {
   verifyUser,
   getCurrentUser,
   updateUsername,
-  updateEmail
+  updateEmail,
+  updatePassword
 };
