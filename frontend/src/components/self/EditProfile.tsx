@@ -7,15 +7,37 @@ import {
   DialogTitle
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
+import { Input } from "../ui/input";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks"
 import { closeSetting } from "@/store/EditSetting";
 import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { USER } from "@/types";
+import { fetchEn } from "@/utils/user";
+
 
 function EditProfile() {
 
   const dispatch = useAppDispatch()
-
   const settingStatus = useAppSelector(state => state.setting.settingOpenStatus)
+  const [user, setUser] = useState<USER | null>(null)
+
+  const fetchAndSetUser = async () => {
+    const result = await fetchEn("/api/user/getCurrentUser")
+    if (result.success) {
+      setUser(result.data)
+    }
+  }
+
+  const [editModeUsername, setEditModeUsername] = useState<boolean>(false)
+  const handleUsernameButton = () => {
+    setEditModeUsername((p) => !p)
+
+  }
+
+  useEffect(() => {
+    fetchAndSetUser()
+  }, [])
 
   return (<>
     <Dialog open={settingStatus} >
@@ -33,14 +55,32 @@ function EditProfile() {
             Make changes to your account here.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+        <div id="body" className="">
+
+          <div id="username" className="text-black flex gap-x-2 items-center flex-wrap">
+
+            <label className="text-text">Username</label>
+            <div className="flex gap-x-2">
+              <Input value={user?.username} disabled={!editModeUsername}
+                className="tablet:min-w-[300px]" />
+              <Button
+                className={`bg-transparent text-text ${editModeUsername ? "border-green-500" : "border-third"}`}
+                variant="outline"
+                onClick={handleUsernameButton}>{editModeUsername ? "Save" : "Edit"}</Button>
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-          </div>
+
+
+
+
+
+
+
+
+
         </div>
+
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
