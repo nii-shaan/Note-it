@@ -3,14 +3,20 @@ import { CiSettings } from "react-icons/ci";
 import { logout } from "../../utils/user";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import EditProfile from "@/components/self/EditProfile";
+import { openSetting, closeSetting } from "@/store/EditSetting"
+import { useAppDispatch } from "@/hooks/reduxHooks";
 
 function NavBar() {
+  const dispatch = useAppDispatch()
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
-  const navItemStyleActive =
-    "  px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-third text-text";
-  const navItemStyleInActive =
-    "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-[#495464] hover:text-text bg-second";
+  const navItemStyleActive = "px-2 py-1 rounded-md transition-all duration-300 ease-in-out scale-110 bg-third text-text";
+  const navItemStyleInActive = "px-2 py-1 transition-all duration-300 ease-in-out scale-90 text-text rounded-md hover:bg-[#495464] hover:text-text bg-second";
+
+  const handldeSettingClick = () => {
+    dispatch(openSetting())
+  }
+
   return (
     <div className="h-12 w-min rounded-xl  text-secondText  flex justify-center items-center gap-x-5 px-5  mx-auto mt-2 mb-6">
       <NavLink
@@ -58,10 +64,11 @@ function NavBar() {
 
           <span className="flex items-center justify-center h-full absolute right-2 tablet:right-10">
             <CiSettings className="text-2xl tablet:text-4xl cursor-pointer text-white 
-            hover:rotate-180 transition-transform duration-700 hover:text-green-500" />
+            hover:rotate-180 transition-transform duration-700 hover:text-green-500"
+              onClick={handldeSettingClick} />
           </span>
 
-          <EditProfile/>
+          <EditProfile />
         </>
       )}
     </div>

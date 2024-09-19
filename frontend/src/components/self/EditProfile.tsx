@@ -4,27 +4,33 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  DialogTitle
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
-import { useState } from "react"
-
+import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks"
+import { closeSetting } from "@/store/EditSetting";
+import { IoMdClose } from "react-icons/io";
 
 function EditProfile() {
 
-   const [openSetting, setOpenSetting] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+
+  const settingStatus = useAppSelector(state => state.setting.settingOpenStatus)
 
   return (<>
-    <Dialog open={openSetting}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={settingStatus} >
+      <DialogContent className="sm:max-w-[425px] bg-second rounded-lg">
+        <Button className="absolute right-2 top-2 z-10 bg-green-700"
+          variant="outline"
+          onClick={() => dispatch(closeSetting())}
+        >
+          <IoMdClose className="text-xl" />
+        </Button>
+
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edit Account</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your account here.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
