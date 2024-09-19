@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { CiSettings } from "react-icons/ci";
 import { logout } from "../../utils/user";
 import { useAppSelector } from "@/hooks/reduxHooks";
 
@@ -53,6 +54,11 @@ function NavBar() {
           <button className={navItemStyleInActive} onClick={() => logout()}>
             Logout
           </button>
+
+          <span className="flex items-center justify-center h-full absolute right-2 tablet:right-10">
+            <CiSettings className="text-2xl tablet:text-4xl cursor-pointer text-white 
+            hover:rotate-180 transition-transform duration-700 hover:text-green-500" />
+          </span>
         </>
       )}
     </div>
