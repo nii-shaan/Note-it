@@ -197,8 +197,9 @@ const updatePassword = asyncHandler(async (req, res) => {
       .json(new ApiResponse(406, null, "old password didnt matched", false, true))
   }
 
-  await User.findByIdAndUpdate(currentUser._id, { password: newPassword })
+  currentUser.password = newPassword
 
+  await currentUser.save()
 
   return res
     .status(200)
