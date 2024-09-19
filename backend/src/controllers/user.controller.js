@@ -133,8 +133,9 @@ const verifyUser = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = req.user
   return res.status(200)
-    .json(new ApiResponse(200, req.user, "user fetched", true, true))
+    .json(new ApiResponse(200, user, "user fetched", true, true))
 })
 
 const updateUsername = asyncHandler(async (req, res) => {
@@ -150,9 +151,13 @@ const updateUsername = asyncHandler(async (req, res) => {
 
   const user = await User.findOneAndUpdate({ email: currUser.email }, { username: newUsername })
 
+  const toSend = await User.findById(user._id).select(
+    "-password -refreshToken"
+  )
+
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "username updated", true, true))
+    .json(new ApiResponse(200, toSend, "username updated", true, true))
 
 })
 

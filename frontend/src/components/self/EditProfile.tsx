@@ -14,6 +14,7 @@ import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { USER } from "@/types";
 import { fetchEn } from "@/utils/user";
+import { toast } from "react-toastify";
 
 
 function EditProfile() {
@@ -21,23 +22,51 @@ function EditProfile() {
   const dispatch = useAppDispatch()
   const settingStatus = useAppSelector(state => state.setting.settingOpenStatus)
   const [user, setUser] = useState<USER | null>(null)
+  console.log(user)
+
+  const [editModeUsername, setEditModeUsername] = useState<boolean>(false)
+  const [usernameValue, setUsernameValue] = useState<string>("")
 
   const fetchAndSetUser = async () => {
     const result = await fetchEn("/api/user/getCurrentUser")
     if (result.success) {
       setUser(result.data)
+      setUsernameValue(result.data.username)
     }
   }
 
-  const [editModeUsername, setEditModeUsername] = useState<boolean>(false)
-  const handleUsernameButton = () => {
-    setEditModeUsername((p) => !p)
+  const handleUsernameButton = async () => {
+    if (editModeUsername) {
+      if (usernameValue === user?.username) {
+        setEditModeUsername(false)
+      } else {
+
+        const response = await fetch("/api/user/updateUsername", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ newUsername: usernameValue })
+        })
+
+        const result = await response.json()
+
+        toast.success(result.message)
+        setEditModeUsername(false)
+        setUser(result.data)
+
+      }
+
+    } else {
+      setEditModeUsername((p) => !p)
+    }
 
   }
 
   useEffect(() => {
     fetchAndSetUser()
-  }, [])
+  }, [settingStatus])
 
   return (<>
     <Dialog open={settingStatus} >
@@ -61,8 +90,12 @@ function EditProfile() {
 
             <label className="text-text">Username</label>
             <div className="flex gap-x-2">
-              <Input value={user?.username} disabled={!editModeUsername}
-                className="tablet:min-w-[300px]" />
+              <Input value={usernameValue}
+                disabled={!editModeUsername}
+                className="tablet:min-w-[300px]"
+                onChange={(e) => {
+                  setUsernameValue(e.target.value)
+                }} />
               <Button
                 className={`bg-transparent text-text ${editModeUsername ? "border-green-500" : "border-third"}`}
                 variant="outline"
