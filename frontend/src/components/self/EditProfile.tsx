@@ -35,6 +35,7 @@ function EditProfile() {
     if (result.success) {
       setUser(result.data)
       setUsernameValue(result.data.username)
+      setEmailValue(result.data.email)
     }
   }
 
@@ -44,25 +45,74 @@ function EditProfile() {
         setEditModeUsername(false)
       } else {
 
-        const response = await fetch("/api/user/updateUsername", {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ newUsername: usernameValue })
-        })
+        try {
 
-        const result = await response.json()
+          const response = await fetch("/api/user/updateUsername", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ newUsername: usernameValue })
+          })
 
-        toast.success(result.message)
-        setEditModeUsername(false)
-        setUser(result.data)
+          const result = await response.json()
 
+          if (result.success) {
+            toast.success(result.message)
+            setEditModeUsername(false)
+            setUser(result.data)
+          } else {
+            toast.error(result.message)
+          }
+
+        }
+        catch (error) {
+          toast.error("Something went wrong")
+        }
       }
 
     } else {
-      setEditModeUsername((p) => !p)
+      setEditModeUsername(true)
+    }
+  }
+
+  const handleEmailButton = async () => {
+
+    if (editModeEmail) {
+
+      if (emailValue === user?.email) {
+        setEditModeEmail(false)
+      } else {
+
+        try {
+          const response = await fetch("/api/user/updateEmail", {
+            method: "PUT",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ newEmail: emailValue })
+          })
+
+          const result = await response.json()
+          if (result.success) {
+            toast.success(result.message)
+            setUser(result.data)
+            setEditModeEmail(false)
+          } else {
+            toast.error(result.message)
+          }
+
+        } catch (error) {
+          toast.error("Something went wrong")
+
+        }
+
+
+      }
+    } else {
+      setEditModeEmail(true)
     }
 
   }
@@ -121,7 +171,7 @@ function EditProfile() {
               <Button
                 className={`bg-transparent text-text ${editModeEmail ? "border-green-500" : "border-third"}`}
                 variant="outline"
-                onClick={() => { }}>
+                onClick={handleEmailButton}>
                 {editModeEmail ? "Save" : "Edit"}
               </Button>
             </div>
