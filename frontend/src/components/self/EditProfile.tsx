@@ -13,7 +13,7 @@ import { Input } from "../ui/input";
 import { useAppSelector, useAppDispatch } from "@/hooks/reduxHooks"
 import { closeSetting } from "@/store/EditSetting";
 import { IoMdClose } from "react-icons/io";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { USER } from "@/types";
 import { fetchEn } from "@/utils/user";
 import { toast } from "react-toastify";
@@ -119,6 +119,13 @@ function EditProfile() {
     }
   }
 
+  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    setPasswordErrors((p) => ([...p, "test"]))
+    console.log("yes")
+  }
+
   useEffect(() => {
     fetchAndSetUser()
   }, [settingStatus])
@@ -195,25 +202,43 @@ function EditProfile() {
                 <DialogDescription />
               </DialogHeader>
               <div id="updatePassword" className="">
-                <div id="old" className="flex gap-x-4 items-center flex-wrap mt-5 justify-evenly">
-                  <Label className="">Old Password</Label>
-                  <div>
-                    <Input className="tablet:min-w-[300px] text-black" />
-                  </div>
-                </div>
-                <div id="new" className="flex gap-x-2 items-center flex-wrap mt-5 justify-evenly">
-                  <Label className="">New Password</Label>
-                  <div>
-                    <Input className="tablet:min-w-[300px] text-black" />
-                  </div>
-                </div>
-                <div id="buttons" className="flex justify-evenly mt-10">
-                  <DialogClose asChild>
-                    <Button variant="outline" className="bg-transparent border-red-500">Cancel</Button>
-                  </DialogClose>
-                  <Button variant="outline" className="bg-transparent border-green-500">Update</Button>
+                <form onSubmit={handlePasswordSubmit}>
 
-                </div>
+                  <div id="old" className="flex gap-x-4 items-center flex-wrap mt-5 justify-evenly">
+                    <Label className="">Old Password</Label>
+                    <div>
+                      <Input className="tablet:min-w-[300px] text-black"
+                      value={oldPasswordValue}
+                      onChange={(e)=>{
+                        setOldPasswordValue(e.target.value)
+                      }}/>
+                    </div>
+                  </div>
+                  <div id="new" className="flex gap-x-2 items-center flex-wrap mt-5 justify-evenly">
+                    <Label className="">New Password</Label>
+                    <div>
+                      <Input className="tablet:min-w-[300px] text-black" />
+                    </div>
+                  </div>
+                  {passwordErrors.length > 0
+                    &&
+                    <div className="flex flex-col items-center text-sm text-red-500 my-2 ">
+
+                      {passwordErrors.map((item,i) => (
+                        <span key={i}>{item}</span>
+                      ))}
+                    </div>}
+                  <div id="buttons" className="flex justify-evenly mt-10">
+                    <DialogClose asChild>
+                      <Button variant="outline" className="bg-transparent border-red-500">Cancel</Button>
+                    </DialogClose>
+                    <Button variant="outline"
+                      className="bg-transparent border-green-500"
+                      type="submit"
+                    >Update</Button>
+
+                  </div>
+                </form>
               </div>
             </DialogContent>
           </Dialog>
