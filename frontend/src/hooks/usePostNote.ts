@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 const postNote = async (data: { title: string }) => {
   try {
-    const response = await fetch("/api/notes/postNote", {
+    const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/notes/postNote`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

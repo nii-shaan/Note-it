@@ -69,7 +69,7 @@ function InNotes() {
 
       if (note?.title !== titleFieldValue) {
         try {
-          const response = await fetch("/api/notes/updateNoteTitle", {
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/notes/updateNoteTitle`, {
             method: "PUT",
             credentials: "include",
             headers: {

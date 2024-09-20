@@ -53,7 +53,7 @@ export const logout = async ({
 export const fetchEn = async (url: string) => {
 
   try {
-    const response = await fetch(`${url}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}${url}`, {
       method: "GET",
       credentials: "include",
       headers: {
