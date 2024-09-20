@@ -89,7 +89,6 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-    domain: "https://notee-it.vercel.app"
   };
 
   const userData = await User.findById(query._id).select(
@@ -117,14 +116,12 @@ const logout = asyncHandler((req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-    domain: "https://notee-it.vercel.app"
   });
   res.clearCookie("refreshToken", {
     path: "/",
     httpOnly: true,
     secure: true,
     sameSite: "None",
-    domain: "https://notee-it.vercel.app"
   });
   res.status(200).send(new ApiResponse(200, null, "Logout success", true));
 });
