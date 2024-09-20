@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { USER } from "@/types";
 import { fetchEn } from "@/utils/user";
 import { toast } from "react-toastify";
+import { Label } from "../ui/label";
 
 
 function EditProfile() {
@@ -22,10 +23,12 @@ function EditProfile() {
   const dispatch = useAppDispatch()
   const settingStatus = useAppSelector(state => state.setting.settingOpenStatus)
   const [user, setUser] = useState<USER | null>(null)
-  console.log(user)
 
   const [editModeUsername, setEditModeUsername] = useState<boolean>(false)
   const [usernameValue, setUsernameValue] = useState<string>("")
+
+  const [editModeEmail, setEditModeEmail] = useState<boolean>(false)
+  const [emailValue, setEmailValue] = useState<string>("")
 
   const fetchAndSetUser = async () => {
     const result = await fetchEn("/api/user/getCurrentUser")
@@ -88,7 +91,7 @@ function EditProfile() {
 
           <div id="username" className="text-black flex gap-x-2 items-center flex-wrap">
 
-            <label className="text-text">Username</label>
+            <Label className="text-text">Username</Label>
             <div className="flex gap-x-2">
               <Input value={usernameValue}
                 disabled={!editModeUsername}
@@ -99,9 +102,31 @@ function EditProfile() {
               <Button
                 className={`bg-transparent text-text ${editModeUsername ? "border-green-500" : "border-third"}`}
                 variant="outline"
-                onClick={handleUsernameButton}>{editModeUsername ? "Save" : "Edit"}</Button>
+                onClick={handleUsernameButton}>
+                {editModeUsername ? "Save" : "Edit"}
+              </Button>
             </div>
           </div>
+
+          <div id="email" className="text-black flex gap-x-2 items-center flex-wrap mt-5">
+
+            <Label className="text-text mr-8">Email</Label>
+            <div className="flex gap-x-2 ">
+              <Input value={emailValue}
+                disabled={!editModeEmail}
+                className="tablet:min-w-[300px]"
+                onChange={(e) => {
+                  setEmailValue(e.target.value)
+                }} />
+              <Button
+                className={`bg-transparent text-text ${editModeEmail ? "border-green-500" : "border-third"}`}
+                variant="outline"
+                onClick={() => { }}>
+                {editModeEmail ? "Save" : "Edit"}
+              </Button>
+            </div>
+          </div>
+
 
 
 
