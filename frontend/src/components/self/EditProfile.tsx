@@ -4,7 +4,9 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogClose,
+  DialogTrigger
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input";
@@ -29,6 +31,10 @@ function EditProfile() {
 
   const [editModeEmail, setEditModeEmail] = useState<boolean>(false)
   const [emailValue, setEmailValue] = useState<string>("")
+
+  const [oldPasswordValue, setOldPasswordValue] = useState<string>("")
+  const [newPasswordValue, setNewPasswordValue] = useState<string>("")
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([])
 
   const fetchAndSetUser = async () => {
     const result = await fetchEn("/api/user/getCurrentUser")
@@ -106,15 +112,11 @@ function EditProfile() {
 
         } catch (error) {
           toast.error("Something went wrong")
-
         }
-
-
       }
     } else {
       setEditModeEmail(true)
     }
-
   }
 
   useEffect(() => {
@@ -178,13 +180,43 @@ function EditProfile() {
           </div>
 
 
+          <Dialog>
+            <div className="w-full flex justify-center">
+              <DialogTrigger asChild>
 
+                <Button variant="outline" className="bg-transparent mt-10 mx-auto border-green-500">
+                  Update Password
+                </Button>
+              </DialogTrigger>
+            </div>
+            <DialogContent className="sm:max-w-[425px] bg-second rounded-lg">
+              <DialogHeader>
+                <DialogTitle>Update Password</DialogTitle>
+                <DialogDescription />
+              </DialogHeader>
+              <div id="updatePassword" className="">
+                <div id="old" className="flex gap-x-4 items-center flex-wrap mt-5 justify-evenly">
+                  <Label className="">Old Password</Label>
+                  <div>
+                    <Input className="tablet:min-w-[300px] text-black" />
+                  </div>
+                </div>
+                <div id="new" className="flex gap-x-2 items-center flex-wrap mt-5 justify-evenly">
+                  <Label className="">New Password</Label>
+                  <div>
+                    <Input className="tablet:min-w-[300px] text-black" />
+                  </div>
+                </div>
+                <div id="buttons" className="flex justify-evenly mt-10">
+                  <DialogClose asChild>
+                    <Button variant="outline" className="bg-transparent border-red-500">Cancel</Button>
+                  </DialogClose>
+                  <Button variant="outline" className="bg-transparent border-green-500">Update</Button>
 
-
-
-
-
-
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
         </div>
 
