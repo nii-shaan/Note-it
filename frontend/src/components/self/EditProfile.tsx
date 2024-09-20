@@ -123,7 +123,7 @@ function EditProfile() {
     e.preventDefault()
 
     if (oldPasswordValue.trim() === "" && newPasswordValue.trim() === "") {
-      setPasswordError("Both field is required")
+      setPasswordError("Both field are required")
     } else if (oldPasswordValue.trim() === "") {
       setPasswordError("Old password is required")
     } else if (newPasswordValue.trim() === "") {
@@ -145,6 +145,8 @@ function EditProfile() {
 
         if (result.success) {
           toast.success(result.message)
+          setOldPasswordValue("")
+          setNewPasswordValue("")
 
         } else {
           setPasswordError(result.message)
@@ -155,18 +157,9 @@ function EditProfile() {
 
       }
 
-
-
-
-
-
     }
-
-
-
-
-
   }
+
 
   useEffect(() => {
     fetchAndSetUser()
@@ -273,7 +266,12 @@ function EditProfile() {
                     </div>}
                   <div id="buttons" className="flex justify-evenly mt-10">
                     <DialogClose asChild>
-                      <Button variant="outline" className="bg-transparent border-red-500">Cancel</Button>
+                      <Button variant="outline"
+                        className="bg-transparent border-red-500"
+                        onClick={() => {
+                          setOldPasswordValue("")
+                          setNewPasswordValue("")
+                        }}>Cancel</Button>
                     </DialogClose>
                     <Button variant="outline"
                       className="bg-transparent border-green-500"

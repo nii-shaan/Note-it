@@ -196,7 +196,7 @@ const updatePassword = asyncHandler(async (req, res) => {
   if (newPassword.length < 8) {
     return res
       .status(406)
-      .json(new ApiResponse(406, null, "Minimum 8 characters required", false, true))
+      .json(new ApiResponse(406, null, "Minimum 8 characters required for new password", false, true))
   }
 
   const currentUser = await User.findOne({ email: currUser.email })
