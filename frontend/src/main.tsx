@@ -25,7 +25,6 @@ const theme = extendBaseTheme({
   },
 });
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const queryClient = new QueryClient();
 
@@ -47,7 +46,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ChakraBaseProvider theme={theme}>
         <RouterProvider router={route} />
       </ChakraBaseProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </Provider>
   // </React.StrictMode>,

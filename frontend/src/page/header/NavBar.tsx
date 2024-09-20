@@ -3,7 +3,7 @@ import { CiSettings } from "react-icons/ci";
 import { logout } from "../../utils/user";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import EditProfile from "@/components/self/EditProfile";
-import { openSetting, closeSetting } from "@/store/EditSetting"
+import { openSetting } from "@/store/EditSetting"
 import { useAppDispatch } from "@/hooks/reduxHooks";
 
 function NavBar() {

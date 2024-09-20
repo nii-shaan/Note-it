@@ -1,8 +1,10 @@
 import { MutatingDots } from "react-loader-spinner";
-import { useAppSelector } from "@/hooks/ReduxHooks";
+import { useAppSelector } from "@/hooks/reduxHooks";
+
+
 
 function Loader() {
-  const loadingState = useAppSelector((state) => state.loader.loadingState);
+  const loadingState = useAppSelector((state) => state.loading.loadingStatus);
 
   if (!loadingState) {
     return <></>;
