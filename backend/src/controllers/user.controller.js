@@ -190,8 +190,15 @@ const updatePassword = asyncHandler(async (req, res) => {
   if (!oldPassword || !newPassword) {
     return res
       .status(406)
-      .json(new ApiResponse(406, null, "both old and new password required", false, true))
+      .json(new ApiResponse(406, null, "Both Old and New password required", false, true))
   }
+
+  if (newPassword.length < 8) {
+    return res
+      .status(406)
+      .json(new ApiResponse(406, null, "Minimum 8 characters required", false, true))
+  }
+
   const currentUser = await User.findOne({ email: currUser.email })
   const doesPasswordMatches = await bcrypt.compare(oldPassword, currentUser.password)
 
