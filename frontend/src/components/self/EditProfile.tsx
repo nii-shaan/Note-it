@@ -34,7 +34,7 @@ function EditProfile() {
 
   const [oldPasswordValue, setOldPasswordValue] = useState<string>("")
   const [newPasswordValue, setNewPasswordValue] = useState<string>("")
-  const [passwordErrors, setPasswordErrors] = useState<string[]>([])
+  const [passwordError, setPasswordError] = useState<string | null>(null)
 
   const fetchAndSetUser = async () => {
     const result = await fetchEn("/api/user/getCurrentUser")
@@ -122,8 +122,26 @@ function EditProfile() {
   const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    setPasswordErrors((p) => ([...p, "test"]))
-    console.log("yes")
+    if (oldPasswordValue.trim() === "" && newPasswordValue.trim() === "") {
+      setPasswordError("Both field is required")
+    } else if (oldPasswordValue.trim() === "") {
+      setPasswordError("Old password is required")
+    } else if (newPasswordValue.trim() === "") {
+      setPasswordError("New password is required")
+    } else {
+      setPasswordError(null)
+
+
+
+
+
+
+    }
+
+
+
+
+
   }
 
   useEffect(() => {
@@ -208,25 +226,26 @@ function EditProfile() {
                     <Label className="">Old Password</Label>
                     <div>
                       <Input className="tablet:min-w-[300px] text-black"
-                      value={oldPasswordValue}
-                      onChange={(e)=>{
-                        setOldPasswordValue(e.target.value)
-                      }}/>
+                        value={oldPasswordValue}
+                        onChange={(e) => {
+                          setOldPasswordValue(e.target.value)
+                        }} />
                     </div>
                   </div>
                   <div id="new" className="flex gap-x-2 items-center flex-wrap mt-5 justify-evenly">
                     <Label className="">New Password</Label>
                     <div>
-                      <Input className="tablet:min-w-[300px] text-black" />
+                      <Input className="tablet:min-w-[300px] text-black"
+                        value={newPasswordValue}
+                        onChange={(e) => {
+                          setNewPasswordValue(e.target.value)
+                        }} />
                     </div>
                   </div>
-                  {passwordErrors.length > 0
+                  {passwordError
                     &&
                     <div className="flex flex-col items-center text-sm text-red-500 my-2 ">
-
-                      {passwordErrors.map((item,i) => (
-                        <span key={i}>{item}</span>
-                      ))}
+                      <span>{passwordError}</span>
                     </div>}
                   <div id="buttons" className="flex justify-evenly mt-10">
                     <DialogClose asChild>
