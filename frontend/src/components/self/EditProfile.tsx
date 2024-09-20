@@ -131,6 +131,30 @@ function EditProfile() {
     } else {
       setPasswordError(null)
 
+      try {
+
+        const response = await fetch("/api/user/updatePassword", {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ oldPassword: oldPasswordValue, newPassword: newPasswordValue })
+        })
+        const result = await response.json()
+
+        if (result.success) {
+          toast.success(result.message)
+
+        } else {
+          setPasswordError(result.message)
+        }
+
+      } catch (error) {
+        toast.error("Something went wrong")
+
+      }
+
 
 
 
