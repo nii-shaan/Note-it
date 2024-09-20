@@ -24,12 +24,6 @@ import { FiLogIn } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 
-
-
-
-
-
-
 function Home() {
 
   const navigate = useNavigate()
@@ -62,7 +56,7 @@ function Home() {
   const queryClient = useQueryClient()
   const { mutate, isPending: mutatePending } = useMutation({
     mutationFn: (payload: { title: string }) => {
-      return fetch("/api/todos/createTodo", {
+      return fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/todos/createTodo`, {
         method: "POST",
         credentials: "include",
         headers: {

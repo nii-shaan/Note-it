@@ -10,7 +10,7 @@ function TodoBlock({ todo }: { todo: TODO }) {
 
   const { mutate } = useMutation({
     mutationFn: () => {
-      return fetch(`/api/todos/deleteTodo/${todo._id}`, {
+      return fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/todos/deleteTodo/${todo._id}`, {
         method: "DELETE",
         credentials: "include"
       })

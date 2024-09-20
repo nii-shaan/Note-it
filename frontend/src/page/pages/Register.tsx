@@ -26,7 +26,7 @@ function Register() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    fetch(`${import.meta.env.VITE_API_ENDPOINT}/user/register`, {
+    fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/user/register`, {
       method: "post",
       body: JSON.stringify(data),
       headers: {

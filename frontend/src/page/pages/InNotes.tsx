@@ -104,7 +104,7 @@ function InNotes() {
         setEditModeContent(false)
       } else {
         try {
-          const response = await fetch("/api/notes/updateContent", {
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/notes/updateContent`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -138,7 +138,7 @@ function InNotes() {
 
     try {
 
-      const response = await fetch(`/api/notes/deleteNote/${note?.title}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/notes/deleteNote/${note?.title}`, {
         method: "DELETE",
         credentials: "include",
       })

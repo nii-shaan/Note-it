@@ -27,7 +27,7 @@ export const logout = async ({
   type = "success"
 }: LogoutUtilParam = {}) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_ENDPOINT}/user/logout`,
+    `${import.meta.env.VITE_API_ENDPOINT}/api/user/logout`,
     { credentials: "include" }
   );
   const data = await response.json();
@@ -63,7 +63,7 @@ export const fetchEn = async (url: string) => {
 
     const result = await response.json();
     if (result.message === "Access token refreshed" && result.statusCode === 200 && !result.success) {
-      const response = await fetch(`${url}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}${url}`, {
         method: "GET",
         credentials: "include",
         headers: {

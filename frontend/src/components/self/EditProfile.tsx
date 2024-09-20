@@ -53,7 +53,7 @@ function EditProfile() {
 
         try {
 
-          const response = await fetch("/api/user/updateUsername", {
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/user/updateUsername`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -92,7 +92,7 @@ function EditProfile() {
       } else {
 
         try {
-          const response = await fetch("/api/user/updateEmail", {
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/user/updateEmail`, {
             method: "PUT",
             credentials: "include",
             headers: {
@@ -133,7 +133,7 @@ function EditProfile() {
 
       try {
 
-        const response = await fetch("/api/user/updatePassword", {
+        const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/user/updatePassword`, {
           method: "PUT",
           credentials: "include",
           headers: {
