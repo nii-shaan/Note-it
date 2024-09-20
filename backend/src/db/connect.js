@@ -4,7 +4,7 @@ const { DB_NAME } = require("../constants");
 const connectDB = async () => {
   try {
     const connection = await mongoose.connect(
-      `${process.env.MONGODB_URL}/${DB_NAME}`
+      `${process.env.MONGODB_URL}`
     );
     console.log(
       `MONGODB connected sucessfully on ${connection.connection.host}`
